@@ -2,9 +2,13 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <cassert>
+#include <chrono>
 
 int main (int argc, char** argv)
 {
+    auto startTime = std::chrono::steady_clock::now ();
+
     std::ifstream inf ("day8.txt");
     std::string l;
     std::vector<std::vector<int>> m;
@@ -69,6 +73,8 @@ int main (int argc, char** argv)
     }
     std::cout << vt << std::endl;
 
+    assert (vt == 1792);
+
     int mss = 0;
     for (int i = 0; i < m.size (); i++) {
         for (int j = 0; j < m[0].size (); j++) {
@@ -105,6 +111,12 @@ int main (int argc, char** argv)
         }
     }
     std::cout << mss << std::endl;
+
+    assert (mss == 334880);
+
+    auto endTime = std::chrono::steady_clock::now ();
+    long runTime = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count (); 
+    assert (runTime < 200);
 
     return 0;
 }
