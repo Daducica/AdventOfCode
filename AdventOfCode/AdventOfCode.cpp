@@ -23,60 +23,152 @@ std::vector<std::vector<int>> ReadForest (const std::string& fileName)
 }
 
 
+bool IsTreeOnEdge (const std::vector<std::vector<int>>& forest, int i, int j)
+{
+    return i == 0 || j == 0 || i == forest.size () - 1 || j == forest[0].size () - 1;
+}
+
+
+bool IsTreeVisibleFromLeft (const std::vector<std::vector<int>>& forest, unsigned int i, unsigned int j)
+{
+    const int treeHeight = forest[i][j];
+    for (unsigned int k = 0; k < i; k++) {
+        if (forest[k][j] >= treeHeight) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool IsTreeVisibleFromRight (const std::vector<std::vector<int>>& forest, unsigned int i, unsigned int j)
+{
+    const int treeHeight = forest[i][j];
+    for (unsigned int k = forest.size () - 1; k > i; k--) {
+        if (forest[k][j] >= treeHeight) {
+            return false;
+        }
+    }
+    return true;
+}
+
+
+bool IsTreeVisibleFromTop (const std::vector<std::vector<int>>& forest, unsigned int i, unsigned int j)
+{
+    const int treeHeight = forest[i][j];
+    for (unsigned int k = 0; k < j; k++) {
+        if (forest[i][k] >= treeHeight) {
+            return false;
+        }
+    }
+    return true;
+}
+
+
+bool IsTreeVisibleFromBottom (const std::vector<std::vector<int>>& forest, unsigned int i, unsigned int j)
+{
+    const int treeHeight = forest[i][j];
+    for (unsigned int k = forest[0].size () - 1; k > j; k--) {
+        if (forest[i][k] >= treeHeight) {
+            return false;
+        }
+    }
+    return true;
+}
+
+
+bool IsTreeVisible (const std::vector<std::vector<int>>& forest, unsigned int i, unsigned int j)
+{
+    if (IsTreeOnEdge (forest, i, j))
+        return true;
+   
+    if (IsTreeVisibleFromLeft (forest, i, j))
+        return true;
+    
+    if (IsTreeVisibleFromRight (forest, i, j))
+        return true;
+    
+    if (IsTreeVisibleFromTop (forest, i, j))
+        return true;
+    
+    if (IsTreeVisibleFromBottom (forest, i, j))
+        return true;
+
+    return false;
+}
+
+
 int GetNumberOfVisibleTreesInForest (const std::vector<std::vector<int>>& forest)
 {
     int visibleTreeCount = 0;
     for (unsigned int i = 0; i < forest.size (); i++) {
         for (unsigned int j = 0; j < forest[0].size (); j++) {
-            if (i == 0 || j == 0 || i == forest.size () - 1 || j == forest[0].size () - 1) {
-                visibleTreeCount++;
-                continue;
-            }
-            bool v = true;
-            for (unsigned int k = 0; k < i; k++) {
-                if (forest[k][j] >= forest[i][j]) {
-                    v = false;
-                    break;
-                }
-            }
-            if (v) {
-                visibleTreeCount++;
-                continue;
-            }
-            v = true;
-            for (unsigned int k = forest.size () - 1; k > i; k--) {
-                if (forest[k][j] >= forest[i][j]) {
-                    v = false;
-                    break;
-                }
-            }
-            if (v) {
-                visibleTreeCount++;
-                continue;
-            }
-            v = true;
-            for (unsigned int k = 0; k < j; k++) {
-                if (forest[i][k] >= forest[i][j]) {
-                    v = false;
-                    break;
-                }
-            }
-            if (v) {
-                visibleTreeCount++;
-                continue;
-            }
-            v = true;
-            for (unsigned int k = forest[0].size () - 1; k > j; k--) {
-                if (forest[i][k] >= forest[i][j]) {
-                    v = false;
-                    break;
-                }
-            }
-            if (v)
+            if (IsTreeVisible (forest, i, j))
                 visibleTreeCount++;
         }
     }
     return visibleTreeCount;
+}
+
+
+int GetNumberOfVisibleTreesToTheLeft (const std::vector<std::vector<int>>& forest, unsigned int i, unsigned int j)
+{
+    int treeCount = 0;
+    const int treeHeight = forest[i][j];
+    for (int k = i - 1; k >= 0; k--) {
+        treeCount++;
+        if (forest[k][j] >= treeHeight)
+            break;
+    }
+    return treeCount;
+}
+
+
+int GetNumberOfVisibleTreesToTheRight (const std::vector<std::vector<int>>& forest, unsigned int i, unsigned int j)
+{
+    int treeCount = 0;
+    const int treeHeight = forest[i][j];
+    for (unsigned int k = i + 1; k < forest.size (); k++) {
+        treeCount++;
+        if (forest[k][j] >= treeHeight)
+            break;
+    }
+    return treeCount;
+}
+
+
+int GetNumberOfVisibleTreesToTheTop (const std::vector<std::vector<int>>& forest, unsigned int i, unsigned int j)
+{
+    int treeCount = 0;
+    const int treeHeight = forest[i][j];
+    for (int k = j - 1; k >= 0; k--) {
+        treeCount++;
+        if (forest[i][k] >= treeHeight)
+            break;
+    }
+    return treeCount;
+}
+
+
+int GetNumberOfVisibleTreesToTheBottom (const std::vector<std::vector<int>>& forest, unsigned int i, unsigned int j)
+{
+    int treeCount = 0;
+    const int treeHeight = forest[i][j];
+    for (unsigned int k = j + 1; k < forest[0].size (); k++) {
+        treeCount++;
+        if (forest[i][k] >= treeHeight)
+            break;
+    }
+    return treeCount;
+}
+
+
+int GetScenicScoreForTree (const std::vector<std::vector<int>>& forest, unsigned int i, unsigned int j)
+{
+    const int scoreToLeft = GetNumberOfVisibleTreesToTheLeft (forest, i, j);
+    const int scoreToRight = GetNumberOfVisibleTreesToTheRight (forest, i, j);
+    const int scoreToTop = GetNumberOfVisibleTreesToTheTop (forest, i, j);
+    const int scoreToBottom = GetNumberOfVisibleTreesToTheBottom (forest, i, j);
+    return scoreToLeft * scoreToRight * scoreToTop * scoreToBottom;
 }
 
 
@@ -85,55 +177,31 @@ int GetHighestScenicScoreInForest (const std::vector<std::vector<int>>& forest)
     int maxScore = 0;
     for (unsigned int i = 0; i < forest.size (); i++) {
         for (unsigned int j = 0; j < forest[0].size (); j++) {
-            if (i == 0 || j == 0 || i == forest.size () - 1 || j == forest[0].size () - 1) {
+            if (IsTreeOnEdge (forest, i, j)) {
                 continue;
             }
-            int lss1 = 0;
-            for (int k = i - 1; k >= 0; k--) {
-                lss1++;
-                if (forest[k][j] >= forest[i][j])
-                    break;
-            }
-            int lss2 = 0;
-            for (unsigned int k = i + 1; k < forest.size (); k++) {
-                lss2++;
-                if (forest[k][j] >= forest[i][j])
-                    break;
-            }
-            int lss3 = 0;
-            for (int k = j - 1; k >= 0; k--) {
-                lss3++;
-                if (forest[i][k] >= forest[i][j])
-                    break;
-            }
-            int lss4 = 0;
-            for (unsigned int k = j + 1; k < forest[0].size (); k++) {
-                lss4++;
-                if (forest[i][k] >= forest[i][j])
-                    break;
-            }
-            int ss = lss1 * lss2 * lss3 * lss4;
-            if (ss > maxScore)
-                maxScore = ss;
+            const int scenicScore = GetScenicScoreForTree (forest, i, j);
+            if (scenicScore > maxScore)
+                maxScore = scenicScore;
         }
     }
     return maxScore;
 }
 
 
-int main (int argc, char** argv)
+int main (int)
 {
     const auto startTime = std::chrono::steady_clock::now ();
 
-    const std::vector<std::vector<int>> m = ReadForest (FileName);
+    const std::vector<std::vector<int>> forest = ReadForest (FileName);
 
-    const int vt = GetNumberOfVisibleTreesInForest (m);
-    std::cout << vt << std::endl;
-    assert (vt == 1792);
+    const int numberOfVisibleTrees = GetNumberOfVisibleTreesInForest (forest);
+    std::cout << numberOfVisibleTrees << std::endl;
+    assert (numberOfVisibleTrees == 1792);
 
-    const int mss = GetHighestScenicScoreInForest (m);
-    std::cout << mss << std::endl;
-    assert (mss == 334880);
+    const int highestScenicScore = GetHighestScenicScoreInForest (forest);
+    std::cout << highestScenicScore << std::endl;
+    assert (highestScenicScore == 334880);
 
     const auto endTime = std::chrono::steady_clock::now ();
     const auto runTime = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count (); 
