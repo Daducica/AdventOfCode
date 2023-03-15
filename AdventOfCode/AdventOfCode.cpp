@@ -7,29 +7,31 @@
 
 const std::string FileName = "day8.txt";
 
-std::vector<std::vector<int>> ReadForest (const std::string& fileName)
+std::vector<std::vector<short>> ReadForest (const std::string& fileName)
 {
     std::ifstream fileStream (fileName);
     std::string line;
-    std::vector<std::vector<int>> forest;
-    while (std::getline (fileStream, line)) {
-        std::vector<int> row;
+    std::vector<std::vector<short>> forest;
+    std::getline (fileStream, line);
+    const int width = line.size ();
+    do {
+        std::vector<short> row (width);
         for (unsigned int i = 0; i < line.size (); i++) {
-            row.push_back (line[i] - '0');
+            row[i] = line[i] - '0';
         }
         forest.push_back (row);
-    }
+    } while (std::getline (fileStream, line));
     return forest;
 }
 
 
-bool IsTreeOnEdge (const std::vector<std::vector<int>>& forest, int i, int j)
+bool IsTreeOnEdge (const std::vector<std::vector<short>>& forest, int i, int j)
 {
     return i == 0 || j == 0 || i == forest.size () - 1 || j == forest[0].size () - 1;
 }
 
 
-bool IsTreeVisibleFromLeft (const std::vector<std::vector<int>>& forest, unsigned int i, unsigned int j)
+bool IsTreeVisibleFromLeft (const std::vector<std::vector<short>>& forest, unsigned int i, unsigned int j)
 {
     const int treeHeight = forest[i][j];
     for (unsigned int k = 0; k < i; k++) {
@@ -40,7 +42,7 @@ bool IsTreeVisibleFromLeft (const std::vector<std::vector<int>>& forest, unsigne
     return true;
 }
 
-bool IsTreeVisibleFromRight (const std::vector<std::vector<int>>& forest, unsigned int i, unsigned int j)
+bool IsTreeVisibleFromRight (const std::vector<std::vector<short>>& forest, unsigned int i, unsigned int j)
 {
     const int treeHeight = forest[i][j];
     for (unsigned int k = forest.size () - 1; k > i; k--) {
@@ -52,7 +54,7 @@ bool IsTreeVisibleFromRight (const std::vector<std::vector<int>>& forest, unsign
 }
 
 
-bool IsTreeVisibleFromTop (const std::vector<std::vector<int>>& forest, unsigned int i, unsigned int j)
+bool IsTreeVisibleFromTop (const std::vector<std::vector<short>>& forest, unsigned int i, unsigned int j)
 {
     const int treeHeight = forest[i][j];
     for (unsigned int k = 0; k < j; k++) {
@@ -64,7 +66,7 @@ bool IsTreeVisibleFromTop (const std::vector<std::vector<int>>& forest, unsigned
 }
 
 
-bool IsTreeVisibleFromBottom (const std::vector<std::vector<int>>& forest, unsigned int i, unsigned int j)
+bool IsTreeVisibleFromBottom (const std::vector<std::vector<short>>& forest, unsigned int i, unsigned int j)
 {
     const int treeHeight = forest[i][j];
     for (unsigned int k = forest[0].size () - 1; k > j; k--) {
@@ -76,7 +78,7 @@ bool IsTreeVisibleFromBottom (const std::vector<std::vector<int>>& forest, unsig
 }
 
 
-bool IsTreeVisible (const std::vector<std::vector<int>>& forest, unsigned int i, unsigned int j)
+bool IsTreeVisible (const std::vector<std::vector<short>>& forest, unsigned int i, unsigned int j)
 {
     if (IsTreeOnEdge (forest, i, j))
         return true;
@@ -97,7 +99,7 @@ bool IsTreeVisible (const std::vector<std::vector<int>>& forest, unsigned int i,
 }
 
 
-int GetNumberOfVisibleTreesInForest (const std::vector<std::vector<int>>& forest)
+int GetNumberOfVisibleTreesInForest (const std::vector<std::vector<short>>& forest)
 {
     int visibleTreeCount = 0;
     for (unsigned int i = 0; i < forest.size (); i++) {
@@ -110,7 +112,7 @@ int GetNumberOfVisibleTreesInForest (const std::vector<std::vector<int>>& forest
 }
 
 
-int GetNumberOfVisibleTreesToTheLeft (const std::vector<std::vector<int>>& forest, unsigned int i, unsigned int j)
+int GetNumberOfVisibleTreesToTheLeft (const std::vector<std::vector<short>>& forest, unsigned int i, unsigned int j)
 {
     int treeCount = 0;
     const int treeHeight = forest[i][j];
@@ -123,7 +125,7 @@ int GetNumberOfVisibleTreesToTheLeft (const std::vector<std::vector<int>>& fores
 }
 
 
-int GetNumberOfVisibleTreesToTheRight (const std::vector<std::vector<int>>& forest, unsigned int i, unsigned int j)
+int GetNumberOfVisibleTreesToTheRight (const std::vector<std::vector<short>>& forest, unsigned int i, unsigned int j)
 {
     int treeCount = 0;
     const int treeHeight = forest[i][j];
@@ -136,7 +138,7 @@ int GetNumberOfVisibleTreesToTheRight (const std::vector<std::vector<int>>& fore
 }
 
 
-int GetNumberOfVisibleTreesToTheTop (const std::vector<std::vector<int>>& forest, unsigned int i, unsigned int j)
+int GetNumberOfVisibleTreesToTheTop (const std::vector<std::vector<short>>& forest, unsigned int i, unsigned int j)
 {
     int treeCount = 0;
     const int treeHeight = forest[i][j];
@@ -149,7 +151,7 @@ int GetNumberOfVisibleTreesToTheTop (const std::vector<std::vector<int>>& forest
 }
 
 
-int GetNumberOfVisibleTreesToTheBottom (const std::vector<std::vector<int>>& forest, unsigned int i, unsigned int j)
+int GetNumberOfVisibleTreesToTheBottom (const std::vector<std::vector<short>>& forest, unsigned int i, unsigned int j)
 {
     int treeCount = 0;
     const int treeHeight = forest[i][j];
@@ -162,7 +164,7 @@ int GetNumberOfVisibleTreesToTheBottom (const std::vector<std::vector<int>>& for
 }
 
 
-int GetScenicScoreForTree (const std::vector<std::vector<int>>& forest, unsigned int i, unsigned int j)
+int GetScenicScoreForTree (const std::vector<std::vector<short>>& forest, unsigned int i, unsigned int j)
 {
     const int scoreToLeft = GetNumberOfVisibleTreesToTheLeft (forest, i, j);
     const int scoreToRight = GetNumberOfVisibleTreesToTheRight (forest, i, j);
@@ -172,7 +174,7 @@ int GetScenicScoreForTree (const std::vector<std::vector<int>>& forest, unsigned
 }
 
 
-int GetHighestScenicScoreInForest (const std::vector<std::vector<int>>& forest)
+int GetHighestScenicScoreInForest (const std::vector<std::vector<short>>& forest)
 {
     int maxScore = 0;
     for (unsigned int i = 0; i < forest.size (); i++) {
@@ -193,7 +195,7 @@ int main (int)
 {
     const auto startTime = std::chrono::steady_clock::now ();
 
-    const std::vector<std::vector<int>> forest = ReadForest (FileName);
+    const std::vector<std::vector<short>> forest = ReadForest (FileName);
 
     const int numberOfVisibleTrees = GetNumberOfVisibleTreesInForest (forest);
     std::cout << numberOfVisibleTrees << std::endl;
