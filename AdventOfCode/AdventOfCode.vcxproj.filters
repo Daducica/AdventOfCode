@@ -18,5 +18,37 @@
     <ClCompile Include="AdventOfCode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ProceduralSolution.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OriginalSolution.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OOPSolution.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TestRunner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ProceduralSolution.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OriginalSolution.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OOPSolution.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TestRunner.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
