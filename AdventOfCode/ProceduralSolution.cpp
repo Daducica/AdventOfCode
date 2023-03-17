@@ -79,11 +79,20 @@ namespace ProceduralSolution
     }
 
 
+    static int  GetEdgeTreeCount (const std::vector<std::vector<short>>& forest)
+    {
+        const unsigned int width = forest[0].size ();
+        const unsigned int height = forest.size ();
+        return 2 * width + 2 * height * 2 - 4;
+    }
+
+
     int GetNumberOfVisibleTreesInForest (const std::vector<std::vector<short>>& forest)
     {
         int visibleTreeCount = 0;
+        const unsigned int width = forest[0].size ();
         for (unsigned int i = 0; i < forest.size (); i++) {
-            for (unsigned int j = 0; j < forest[0].size (); j++) {
+            for (unsigned int j = 0; j < width; j++) {
                 if (IsTreeVisible (forest, i, j))
                     visibleTreeCount++;
             }
@@ -157,8 +166,9 @@ namespace ProceduralSolution
     int GetHighestScenicScoreInForest (const std::vector<std::vector<short>>& forest)
     {
         int maxScore = 0;
+        const unsigned int width = forest[0].size ();
         for (unsigned int i = 0; i < forest.size (); i++) {
-            for (unsigned int j = 0; j < forest[0].size (); j++) {
+            for (unsigned int j = 0; j < width; j++) {
                 if (IsTreeOnEdge (forest, i, j)) {
                     continue;
                 }
@@ -171,15 +181,19 @@ namespace ProceduralSolution
     }
 
 
-    void RunProceduralSolution (const std::string& fileName)
+    void RunProceduralSolution (const std::string& fileName, bool shouldRunVisibilityCountTest, bool shouldRunHighestScenicScoreTest)
     {
         const std::vector<std::vector<short>> forest = Utilities::ReadForest (fileName);
 
-        const int numberOfVisibleTrees = ProceduralSolution::GetNumberOfVisibleTreesInForest (forest);
-        assert (numberOfVisibleTrees == 1792);
+        if (shouldRunVisibilityCountTest) {
+            const int numberOfVisibleTrees = ProceduralSolution::GetNumberOfVisibleTreesInForest (forest);
+            assert (numberOfVisibleTrees == 1792);
+        }
 
-        const int highestScenicScore = ProceduralSolution::GetHighestScenicScoreInForest (forest);
-        assert (highestScenicScore == 334880);
+        if (shouldRunHighestScenicScoreTest) {
+            const int highestScenicScore = ProceduralSolution::GetHighestScenicScoreInForest (forest);
+            assert (highestScenicScore == 334880);
+        }
     }
 
 }

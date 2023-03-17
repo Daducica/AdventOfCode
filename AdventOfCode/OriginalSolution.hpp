@@ -5,7 +5,9 @@
 
 namespace OriginalSolution
 {
-	void RunOriginalSolution (const std::string& fileName);
+	void RunOriginalSolution (const std::string& fileName,
+							  bool shouldRunVisibilityCountTest,
+							  bool shouldRunHighestScenicScoreTest);
 }
 
 #endif

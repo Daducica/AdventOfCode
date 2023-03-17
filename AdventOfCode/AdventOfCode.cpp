@@ -7,5 +7,6 @@ constexpr unsigned int NumberOfTestRuns = 10;
 
 int main (int)
 {
-    Test::RunTests (FileName, NumberOfTestRuns);
+    Test::TestConfig config { FileName, NumberOfTestRuns, true, false};
+    Test::RunTests (config);
 }

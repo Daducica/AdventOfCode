@@ -8,40 +8,36 @@
 
 namespace Test
 {
-	typedef std::function<void (const std::string&)> TestFunction;
+	typedef std::function<void (const std::string&, bool, bool)> TestFunction;
 
-	static void RunTest (const std::string& fileName, unsigned int numberOfTestRuns,
-						 const std::string& message, const TestFunction& function)
+	static void RunTest (const std::string& message, const TestFunction& function, const TestConfig& config)
 	{
 		Utilities::Timer timer;
 		timer.StartTimer ();
 
-		for (unsigned int i = 0; i < numberOfTestRuns; ++i)
-			function (fileName);
+		for (unsigned int i = 0; i < config.numberOfTestRuns; ++i)
+			function (config.fileName, config.shouldRunVisibilityCountTest, config.shouldRunHighestScenicScoreTest);
 
 		timer.StopTimer (message);
 	}
 
 
 
-	void RunTests (const std::string& fileName, unsigned int numberOfTestRuns)
+	void RunTests (const TestConfig& config)
 	{
-		RunTest (fileName, numberOfTestRuns, "The original solution finished in\t",
-				 &OriginalSolution::RunOriginalSolution);
-		RunTest (fileName, numberOfTestRuns, "The original solution finished in\t",
-				 &OriginalSolution::RunOriginalSolution);
-		RunTest (fileName, numberOfTestRuns, "The original solution finished in\t",
-				 &OriginalSolution::RunOriginalSolution);
-		RunTest (fileName, numberOfTestRuns, "The original solution finished in\t",
-				 &OriginalSolution::RunOriginalSolution);
-		RunTest (fileName, numberOfTestRuns, "The original solution finished in\t",
-				 &OriginalSolution::RunOriginalSolution);
+		RunTest ("The original solution finished in\t",
+				 &OriginalSolution::RunOriginalSolution, config);
+		RunTest ("The original solution finished in\t",
+				 &OriginalSolution::RunOriginalSolution, config);
+		RunTest ("The original solution finished in\t",
+				 &OriginalSolution::RunOriginalSolution, config);
+		RunTest ("The original solution finished in\t",
+				 &OriginalSolution::RunOriginalSolution, config);
+		RunTest ("The original solution finished in\t",
+				 &OriginalSolution::RunOriginalSolution, config);
 
-		RunTest (fileName, numberOfTestRuns, "The original solution finished in\t",
-				 &OriginalSolution::RunOriginalSolution);
-		RunTest (fileName, numberOfTestRuns, "The procedural solution finished in\t",
-				 &ProceduralSolution::RunProceduralSolution);
-		RunTest (fileName, numberOfTestRuns, "The OOP solution finished in\t\t",
-				 &OOPSolution::RunOOPSolution);
+		RunTest ("The original solution finished in\t", &OriginalSolution::RunOriginalSolution, config);
+		RunTest ("The procedural solution finished in\t", &ProceduralSolution::RunProceduralSolution, config);
+		RunTest ("The OOP solution finished in\t\t", &OOPSolution::RunOOPSolution, config);
 	}
 }

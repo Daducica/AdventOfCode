@@ -5,7 +5,9 @@
 
 namespace OOPSolution
 {
-	void RunOOPSolution (const std::string& fileName);
+	void RunOOPSolution (const std::string& fileName,
+						 bool shouldRunVisibilityCountTest,
+						 bool shouldRunHighestScenicScoreTest);
 }
 
 #endif

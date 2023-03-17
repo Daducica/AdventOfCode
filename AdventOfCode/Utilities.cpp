@@ -15,12 +15,18 @@ namespace Utilities
         const int width = line.size ();
         do {
             std::vector<short> row (width);
-            for (unsigned int i = 0; i < line.size (); i++) {
-                row[i] = line[i] - '0';
+            for (unsigned int i = 0; i < width; i++) {
+                row[i] = CharToShort (line[i] - '0');
             }
             forest.push_back (row);
         } while (std::getline (fileStream, line));
         return forest;
+    }
+
+
+    short CharToShort (char c)
+    {
+        return c - '0';
     }
 
 

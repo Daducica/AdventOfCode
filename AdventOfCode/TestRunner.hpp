@@ -5,7 +5,16 @@
 
 namespace Test
 {
-	void RunTests (const std::string& fileName, unsigned int numberOfTestRuns);
+	struct TestConfig {
+		const std::string fileName;
+		const unsigned int numberOfTestRuns;
+		bool shouldRunVisibilityCountTest;
+		bool shouldRunHighestScenicScoreTest;
+
+		TestConfig () = delete;
+	};
+
+	void RunTests (const TestConfig& config);
 }
 
 #endif

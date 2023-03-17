@@ -6,7 +6,9 @@
 
 namespace ProceduralSolution
 {
-	void RunProceduralSolution (const std::string& fileName);
+	void RunProceduralSolution (const std::string& fileName,
+								bool shouldRunVisibilityCountTest,
+								bool shouldRunHighestScenicScoreTest);
 	int GetNumberOfVisibleTreesInForest (const std::vector<std::vector<short>>& forest);
 	int GetHighestScenicScoreInForest (const std::vector<std::vector<short>>& forest);
 }
