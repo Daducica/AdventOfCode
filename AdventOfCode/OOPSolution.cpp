@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "Forest.hpp"
+#include "ForestCalculatorImplementation.hpp"
 
 namespace OOPSolution
 {
@@ -13,7 +14,7 @@ namespace OOPSolution
 
 	void RunOOPSolution (const std::string& fileName, bool shouldRunVisibilityCountTest, bool shouldRunHighestScenicScoreTest)
 	{
-		Forest forest (fileName);
+		Forest forest (fileName, std::make_unique<ForestCalculatorImplementation> ());
 
 		if (shouldRunVisibilityCountTest) {
 			const int numberOfVisibleTrees = forest.CalculateAndSaveVisibleTreeCount ();
