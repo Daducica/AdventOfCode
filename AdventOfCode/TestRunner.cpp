@@ -26,20 +26,20 @@ namespace Test
 
 	void RunTests (const TestConfig& config)
 	{
-		RunTest ("The original solution finished in\t",
+		RunTest ("The original solution finished in\t\t",
 				 &OriginalSolution::RunOriginalSolution, config);
-		RunTest ("The original solution finished in\t",
+		RunTest ("The original solution finished in\t\t",
 				 &OriginalSolution::RunOriginalSolution, config);
-		RunTest ("The original solution finished in\t",
+		RunTest ("The original solution finished in\t\t",
 				 &OriginalSolution::RunOriginalSolution, config);
-		RunTest ("The original solution finished in\t",
+		RunTest ("The original solution finished in\t\t",
 				 &OriginalSolution::RunOriginalSolution, config);
-		RunTest ("The original solution finished in\t",
+		RunTest ("The original solution finished in\t\t",
 				 &OriginalSolution::RunOriginalSolution, config);
 
-		RunTest ("The original solution finished in\t", &OriginalSolution::RunOriginalSolution, config);
-		RunTest ("The procedural solution finished in\t", &ProceduralSolution::RunProceduralSolution, config);
+		RunTest ("The original solution finished in\t\t", &OriginalSolution::RunOriginalSolution, config);
+		RunTest ("The procedural solution finished in\t\t", &ProceduralSolution::RunProceduralSolution, config);
 		RunTest ("The optimized procedural solution finished in\t", &OptimizedProceduralSolution::RunOptimizedProceduralSolution, config);
-		RunTest ("The OOP solution finished in\t\t", &OOPSolution::RunOOPSolution, config);
+		RunTest ("The OOP solution finished in\t\t\t", &OOPSolution::RunOOPSolution, config);
 	}
 }

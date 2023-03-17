@@ -17,7 +17,7 @@ namespace Utilities
         do {
             std::vector<short> row (width);
             for (unsigned int i = 0; i < width; i++) {
-                row[i] = CharToShort (line[i] - '0');
+                row[i] = CharToShort (line[i]);
             }
             forest.push_back (row);
         } while (std::getline (fileStream, line));
