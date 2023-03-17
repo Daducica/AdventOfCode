@@ -12,7 +12,7 @@ namespace Utilities
         std::string line;
         std::vector<std::vector<short>> forest;
         std::getline (fileStream, line);
-        const int width = line.size ();
+        const unsigned int width = line.size ();
         do {
             std::vector<short> row (width);
             for (unsigned int i = 0; i < width; i++) {

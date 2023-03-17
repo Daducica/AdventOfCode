@@ -126,10 +126,83 @@ namespace OOPSolution
 	}
 
 
+	int Forest::GetNumberOfVisibleTreesToTheLeft (unsigned int i, unsigned int j) const
+	{
+		int treeCount = 0;
+		const int treeHeight = trees[i][j].GetHeight ();
+		for (int k = i - 1; k >= 0; k--) {
+			treeCount++;
+			if (trees[k][j].GetHeight () >= treeHeight)
+				break;
+		}
+		return treeCount;
+	}
+
+
+	int Forest::GetNumberOfVisibleTreesToTheRight (unsigned int i, unsigned int j) const
+	{
+		int treeCount = 0;
+		const int treeHeight = trees[i][j].GetHeight ();
+		for (unsigned int k = i + 1; k < trees.size (); k++) {
+			treeCount++;
+			if (trees[k][j].GetHeight () >= treeHeight)
+				break;
+		}
+		return treeCount;
+	}
+
+
+	int Forest::GetNumberOfVisibleTreesToTheTop (unsigned int i, unsigned int j) const
+	{
+		int treeCount = 0;
+		const int treeHeight = trees[i][j].GetHeight ();
+		for (int k = j - 1; k >= 0; k--) {
+			treeCount++;
+			if (trees[i][k].GetHeight () >= treeHeight)
+				break;
+		}
+		return treeCount;
+	}
+
+
+	int Forest::GetNumberOfVisibleTreesToTheBottom (unsigned int i, unsigned int j) const
+	{
+		int treeCount = 0;
+		const int treeHeight = trees[i][j].GetHeight ();
+		for (unsigned int k = j + 1; k < trees[0].size (); k++) {
+			treeCount++;
+			if (trees[i][k].GetHeight () >= treeHeight)
+				break;
+		}
+		return treeCount;
+	}
+
+
+	int Forest::GetScenicScoreForTree (unsigned int i, unsigned int j) const
+	{
+		const int scoreToLeft = GetNumberOfVisibleTreesToTheLeft (i, j);
+		const int scoreToRight = GetNumberOfVisibleTreesToTheRight (i, j);
+		const int scoreToTop = GetNumberOfVisibleTreesToTheTop (i, j);
+		const int scoreToBottom = GetNumberOfVisibleTreesToTheBottom (i, j);
+		return scoreToLeft * scoreToRight * scoreToTop * scoreToBottom;
+	}
+
 	int Forest::CalculateAndSaveHighestScenicScoreInForest ()
 	{
-
-		return 334880;
+		int maxScore = 0;
+		const unsigned int width = trees[0].size ();
+		for (unsigned int i = 0; i < trees.size (); i++) {
+			for (unsigned int j = 0; j < width; j++) {
+				if (IsTreeOnEdge (i, j)) {
+					continue;
+				}
+				const int scenicScore = GetScenicScoreForTree (i, j);
+				trees[i][j].SetScenicScore (scenicScore);
+				if (scenicScore > maxScore)
+					maxScore = scenicScore;
+			}
+		}
+		return maxScore;
 	}
 
 

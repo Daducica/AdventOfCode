@@ -21,6 +21,12 @@ namespace OOPSolution
 		int CheckAndSaveVisibilityFromTop ();
 		int CheckAndSaveVisibilityFromBottom ();
 
+		int GetNumberOfVisibleTreesToTheLeft (unsigned int i, unsigned int j) const;
+		int GetNumberOfVisibleTreesToTheRight (unsigned int i, unsigned int j) const;
+		int GetNumberOfVisibleTreesToTheTop (unsigned int i, unsigned int j) const;
+		int GetNumberOfVisibleTreesToTheBottom (unsigned int i, unsigned int j) const;
+		int GetScenicScoreForTree (unsigned int i, unsigned int j) const;
+
 		void Clear ();
 
 	public:

@@ -17,6 +17,7 @@ namespace OOPSolution
 		std::optional<bool> visibleFromTop;
 		std::optional<bool> visibleFromBottom;
 		std::optional<bool> visibleFromAnyDirection;
+		std::optional<int>  scenicScore;
 
 	public:
 		Tree (short height);
@@ -27,6 +28,7 @@ namespace OOPSolution
 		void SetVisibleFromRight (bool value) { visibleFromRight = value; }
 		void SetVisibleFromTop (bool value) { visibleFromTop = value; }
 		void SetVisibleFromBottom (bool value) { visibleFromBottom = value; }
+		void SetScenicScore (int value) { scenicScore = value; }
 	};
 
 }
