@@ -1,9 +1,9 @@
-#include "ProceduralSolution.hpp"
+#include "ProceduralOptimizedSolution.hpp"
 
 #include <cassert>
 #include "Utilities.hpp"
 
-namespace ProceduralSolution
+namespace OptimizedProceduralSolution
 {
     static bool IsTreeOnEdge (const std::vector<std::vector<short>>& forest, int i, int j)
     {
@@ -181,18 +181,18 @@ namespace ProceduralSolution
     }
 
 
-    void RunProceduralSolution (const std::string& fileName, bool shouldRunVisibilityCountTest, bool shouldRunHighestScenicScoreTest)
+    void RunOptimizedProceduralSolution (const std::string& fileName, bool shouldRunVisibilityCountTest, bool shouldRunHighestScenicScoreTest)
     {
         const std::vector<std::vector<short>> forest = Utilities::ReadForest (fileName);
 
         if (shouldRunVisibilityCountTest) {
-            const int numberOfVisibleTrees = ProceduralSolution::GetNumberOfVisibleTreesInForest (forest);
+            const int numberOfVisibleTrees = GetNumberOfVisibleTreesInForest (forest);
             if (fileName == "day8.txt")
                 assert (numberOfVisibleTrees == 1792);
         }
 
         if (shouldRunHighestScenicScoreTest) {
-            const int highestScenicScore = ProceduralSolution::GetHighestScenicScoreInForest (forest);
+            const int highestScenicScore = GetHighestScenicScoreInForest (forest);
             if (fileName == "day8.txt")
                 assert (highestScenicScore == 334880);
         }

@@ -3,6 +3,7 @@
 #include <functional>
 #include "OOPSolution.hpp"
 #include "OriginalSolution.hpp"
+#include "ProceduralOptimizedSolution.hpp"
 #include "ProceduralSolution.hpp"
 #include "Utilities.hpp"
 
@@ -38,6 +39,7 @@ namespace Test
 
 		RunTest ("The original solution finished in\t", &OriginalSolution::RunOriginalSolution, config);
 		RunTest ("The procedural solution finished in\t", &ProceduralSolution::RunProceduralSolution, config);
+		RunTest ("The optimized procedural solution finished in\t", &OptimizedProceduralSolution::RunOptimizedProceduralSolution, config);
 		RunTest ("The OOP solution finished in\t\t", &OOPSolution::RunOOPSolution, config);
 	}
 }

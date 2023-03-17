@@ -1,8 +1,9 @@
 #include "Utilities.hpp"
 
+#include <cassert>
 #include <fstream>
 #include <iostream>
-#include <cassert>
+#include <random>
 
 namespace Utilities
 {
@@ -20,6 +21,7 @@ namespace Utilities
             }
             forest.push_back (row);
         } while (std::getline (fileStream, line));
+        fileStream.close ();
         return forest;
     }
 
@@ -27,6 +29,26 @@ namespace Utilities
     short CharToShort (char c)
     {
         return c - '0';
+    }
+
+
+    void GenerateNewForestFile (const std::string& fileName)
+    {
+        std::ofstream myfile;
+        myfile.open (fileName);
+
+        std::random_device rd;
+        std::mt19937 gen (rd ());
+        std::uniform_int_distribution<> distr (0, 9);
+
+        for (int i = 0; i < 1000; i++) {
+            for (int j = 0; j < 1000; j++) {
+                myfile << distr (gen);
+            }
+            myfile << "\n";
+        }
+
+        myfile.close ();
     }
 
 

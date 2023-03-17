@@ -17,12 +17,14 @@ namespace OOPSolution
 
 		if (shouldRunVisibilityCountTest) {
 			const int numberOfVisibleTrees = forest.CalculateAndSaveVisibleTreeCount ();
-			assert (numberOfVisibleTrees == 1792);
+			if (fileName == "day8.txt")
+				assert (numberOfVisibleTrees == 1792);
 		}
 
 		if (shouldRunHighestScenicScoreTest) {
 			const int highestScenicScore = forest.CalculateAndSaveHighestScenicScoreInForest ();
-			assert (highestScenicScore == 334880);
+			if (fileName == "day8.txt")
+				assert (highestScenicScore == 334880);
 		}
 	}
 }

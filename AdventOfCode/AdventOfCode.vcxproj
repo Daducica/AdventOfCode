@@ -147,6 +147,7 @@
     <ClCompile Include="Forest.cpp" />
     <ClCompile Include="OOPSolution.cpp" />
     <ClCompile Include="OriginalSolution.cpp" />
+    <ClCompile Include="ProceduralOptimizedSolution.cpp" />
     <ClCompile Include="ProceduralSolution.cpp" />
     <ClCompile Include="TestRunner.cpp" />
     <ClCompile Include="Tree.cpp" />
@@ -156,6 +157,7 @@
     <ClInclude Include="Forest.hpp" />
     <ClInclude Include="OOPSolution.hpp" />
     <ClInclude Include="OriginalSolution.hpp" />
+    <ClInclude Include="ProceduralOptimizedSolution.hpp" />
     <ClInclude Include="ProceduralSolution.hpp" />
     <ClInclude Include="TestRunner.hpp" />
     <ClInclude Include="Tree.hpp" />

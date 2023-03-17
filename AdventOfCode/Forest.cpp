@@ -229,6 +229,7 @@ namespace OOPSolution
 			}
 			forest.trees.push_back (row);
 		}
+		fileStream.close ();
 	}
 
 }
