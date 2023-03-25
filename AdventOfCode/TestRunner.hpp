@@ -8,6 +8,7 @@ namespace Test
 	struct TestConfig {
 		const std::string fileName;
 		const unsigned int numberOfTestRuns;
+		const bool shouldRunFullTest;
 		const bool shouldMeasureFileRead;
 		const bool shouldRunVisibilityCountTest;
 		const bool shouldRunHighestScenicScoreTest;
