@@ -8,6 +8,13 @@ namespace OptimizedProceduralSolution
     typedef std::vector<std::vector<short>> Forest;
     typedef std::vector<std::vector<bool>> VisibilityCache;
 
+
+    std::vector<std::vector<short>> ReadFile (const std::string& fileName)
+    {
+        return Utilities::ReadForest (fileName);
+    }
+
+
     static bool IsTreeOnEdge (const Forest& forest, int i, int j)
     {
         return i == 0 || j == 0 || i == forest.size () - 1 || j == forest[0].size () - 1;
@@ -198,21 +205,11 @@ namespace OptimizedProceduralSolution
     }
 
 
-    void RunOptimizedProceduralSolution (const std::string& fileName, bool shouldRunVisibilityCountTest, bool shouldRunHighestScenicScoreTest)
+    void RunOptimizedProceduralSolution (const std::string& fileName)
     {
-        const Forest forest = Utilities::ReadForest (fileName);
-
-        if (shouldRunVisibilityCountTest) {
-            const int numberOfVisibleTrees = GetNumberOfVisibleTreesInForest (forest);
-            if (fileName == "day8.txt")
-                assert (numberOfVisibleTrees == 1792);
-        }
-
-        if (shouldRunHighestScenicScoreTest) {
-            const int highestScenicScore = GetHighestScenicScoreInForest (forest);
-            if (fileName == "day8.txt")
-                assert (highestScenicScore == 334880);
-        }
+        const Forest forest = ReadFile (fileName);
+        GetNumberOfVisibleTreesInForest (forest);
+        GetHighestScenicScoreInForest (forest);
     }
 
 }

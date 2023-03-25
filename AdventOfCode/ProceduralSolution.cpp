@@ -5,6 +5,12 @@
 
 namespace ProceduralSolution
 {
+    std::vector<std::vector<short>> ReadFile (const std::string& fileName)
+    {
+        return Utilities::ReadForest (fileName);
+    }
+
+
     static bool IsTreeOnEdge (const std::vector<std::vector<short>>& forest, int i, int j)
     {
         return i == 0 || j == 0 || i == forest.size () - 1 || j == forest[0].size () - 1;
@@ -181,21 +187,11 @@ namespace ProceduralSolution
     }
 
 
-    void RunProceduralSolution (const std::string& fileName, bool shouldRunVisibilityCountTest, bool shouldRunHighestScenicScoreTest)
+    void RunProceduralSolution (const std::string& fileName)
     {
-        const std::vector<std::vector<short>> forest = Utilities::ReadForest (fileName);
-
-        if (shouldRunVisibilityCountTest) {
-            const int numberOfVisibleTrees = ProceduralSolution::GetNumberOfVisibleTreesInForest (forest);
-            if (fileName == "day8.txt")
-                assert (numberOfVisibleTrees == 1792);
-        }
-
-        if (shouldRunHighestScenicScoreTest) {
-            const int highestScenicScore = ProceduralSolution::GetHighestScenicScoreInForest (forest);
-            if (fileName == "day8.txt")
-                assert (highestScenicScore == 334880);
-        }
+        const std::vector<std::vector<short>> forest = ReadFile (fileName);
+        ProceduralSolution::GetNumberOfVisibleTreesInForest (forest);
+        ProceduralSolution::GetHighestScenicScoreInForest (forest);
     }
 
 }

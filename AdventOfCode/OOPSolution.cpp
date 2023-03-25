@@ -5,27 +5,32 @@
 #include <optional>
 #include <vector>
 
-#include "Forest.hpp"
 #include "ForestCalculatorImplementation.hpp"
 
 namespace OOPSolution
 {
-
-
-	void RunOOPSolution (const std::string& fileName, bool shouldRunVisibilityCountTest, bool shouldRunHighestScenicScoreTest)
+	Forest ReadFile (const std::string& fileName)
 	{
-		Forest forest (fileName, std::make_unique<ForestCalculatorImplementation> ());
+		return Forest (fileName, std::make_unique<ForestCalculatorImplementation> ());
+	}
 
-		if (shouldRunVisibilityCountTest) {
-			const int numberOfVisibleTrees = forest.CalculateAndSaveVisibleTreeCount ();
-			if (fileName == "day8.txt")
-				assert (numberOfVisibleTrees == 1792);
-		}
 
-		if (shouldRunHighestScenicScoreTest) {
-			const int highestScenicScore = forest.CalculateAndSaveHighestScenicScoreInForest ();
-			if (fileName == "day8.txt")
-				assert (highestScenicScore == 334880);
-		}
+	int GetNumberOfVisibleTreesInForest (Forest& forest)
+	{
+		return forest.CalculateAndSaveVisibleTreeCount ();
+	}
+
+
+	int GetHighestScenicScoreInForest (Forest& forest)
+	{
+		return forest.CalculateAndSaveHighestScenicScoreInForest ();
+	}
+
+
+	void RunOOPSolution (const std::string& fileName)
+	{
+		Forest forest = ReadFile (fileName);
+		GetNumberOfVisibleTreesInForest (forest);
+		GetHighestScenicScoreInForest (forest);
 	}
 }

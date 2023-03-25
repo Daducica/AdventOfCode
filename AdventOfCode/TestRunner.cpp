@@ -1,6 +1,9 @@
 #include "TestRunner.hpp"
 
 #include <functional>
+#include <iomanip>
+#include <iostream>
+
 #include "OOPSolution.hpp"
 #include "OriginalSolution.hpp"
 #include "ProceduralOptimizedSolution.hpp"
@@ -9,37 +12,67 @@
 
 namespace Test
 {
-	typedef std::function<void (const std::string&, bool, bool)> TestFunction;
+	typedef std::function<void (const std::string&)> TestFunction;
 
-	static void RunTest (const std::string& message, const TestFunction& function, const TestConfig& config)
+	static int RunTestAndMeasureAverageDuration (const TestFunction& function, const TestConfig& config)
 	{
-		Utilities::Timer timer;
+		Utilities::MilliSecTimer timer;
 		timer.StartTimer ();
 
 		for (unsigned int i = 0; i < config.numberOfTestRuns; ++i)
-			function (config.fileName, config.shouldRunVisibilityCountTest, config.shouldRunHighestScenicScoreTest);
+			function (config.fileName);
 
-		timer.StopTimer (message);
+		return timer.StopTimer () / config.numberOfTestRuns;
 	}
 
+
+	struct TestItem
+	{
+		const TestFunction function;
+		const std::string name;
+		std::optional<int> result;
+
+		TestItem (const TestFunction& function, const std::string& name) :
+			function (function),
+			name (name)
+		{
+		}
+	};
+
+
+	void PrintResults (int benchMark, const std::vector<TestItem>& results)
+	{
+		std::cout << std::fixed;
+		std::cout << std::setprecision (2);
+
+		for (const TestItem& testItem : results) {
+			if (testItem.result.has_value ()) {
+				const double relativeRunTime = (double)benchMark / testItem.result.value ();
+				std::cout << testItem.name << "\t" << relativeRunTime << "x\n";
+			}
+		}
+	}
 
 
 	void RunTests (const TestConfig& config)
 	{
-		RunTest ("The original solution finished in\t\t",
-				 &OriginalSolution::RunOriginalSolution, config);
-		RunTest ("The original solution finished in\t\t",
-				 &OriginalSolution::RunOriginalSolution, config);
-		RunTest ("The original solution finished in\t\t",
-				 &OriginalSolution::RunOriginalSolution, config);
-		RunTest ("The original solution finished in\t\t",
-				 &OriginalSolution::RunOriginalSolution, config);
-		RunTest ("The original solution finished in\t\t",
-				 &OriginalSolution::RunOriginalSolution, config);
+		int benchMark = RunTestAndMeasureAverageDuration (&OriginalSolution::RunOriginalSolution, config);
 
-		RunTest ("The original solution finished in\t\t", &OriginalSolution::RunOriginalSolution, config);
-		RunTest ("The procedural solution finished in\t\t", &ProceduralSolution::RunProceduralSolution, config);
-		RunTest ("The optimized procedural solution finished in\t", &OptimizedProceduralSolution::RunOptimizedProceduralSolution, config);
-		RunTest ("The OOP solution finished in\t\t\t", &OOPSolution::RunOOPSolution, config);
+		std::vector<TestItem> functionsToTest {
+			{ &OriginalSolution::RunOriginalSolution, "Original"},
+			{ &ProceduralSolution::RunProceduralSolution,  "Procedural"},
+			{ &OptimizedProceduralSolution::RunOptimizedProceduralSolution, "Optimized"},
+			{ &OOPSolution::RunOOPSolution,  "OOP\t"}
+		};
+
+		for (TestItem& testItem : functionsToTest) {
+			testItem.result = RunTestAndMeasureAverageDuration (testItem.function, config);
+		}
+
+		std::cout << "Filename=" << config.fileName << "\n"
+				  << "LoopCount=" << config.numberOfTestRuns << "\n"
+				  << "Benchmark=" << benchMark << "ms\n"
+				  << "---------------------------------------------\n";
+		PrintResults (benchMark, functionsToTest);
 	}
 }

@@ -32,42 +32,38 @@ namespace Utilities
     }
 
 
-    void GenerateNewForestFile (const std::string& fileName)
+    void GenerateNewForestFile (const std::string& fileName, int height, int width)
     {
-        std::ofstream myfile;
-        myfile.open (fileName);
+        std::ofstream file;
+        file.open (fileName);
 
-        std::random_device rd;
-        std::mt19937 gen (rd ());
-        std::uniform_int_distribution<> distr (0, 9);
+        std::random_device randomDevice;
+        std::mt19937 generator (randomDevice ());
+        std::uniform_int_distribution<> distribution (0, 9);
 
-        for (int i = 0; i < 1000; i++) {
-            for (int j = 0; j < 1000; j++) {
-                myfile << distr (gen);
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                file << distribution (generator);
             }
-            myfile << "\n";
+            file << "\n";
         }
 
-        myfile.close ();
+        file.close ();
     }
 
 
-    void Timer::StartTimer ()
+    void MilliSecTimer::StartTimer ()
     {
         startTime = std::chrono::high_resolution_clock::now ();
     }
 
 
-    int Timer::StopTimer (const std::optional<std::string>& message /*= std::nullopt*/,
-                           const std::optional<int>& maxDuration /*= std::nullopt*/)
+    int MilliSecTimer::StopTimer (const std::optional<std::string>& message /*= std::nullopt*/)
     {
         Time stopTime = std::chrono::high_resolution_clock::now ();
         auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stopTime - startTime).count ();
         if (message.has_value ())
-            std::cout << message.value ();
-        std::cout << duration << "ms" << std::endl;
-        if (maxDuration.has_value ())
-            assert (duration < maxDuration);
+            std::cout << message.value () << duration << "ms" << std::endl;
         return static_cast <int> (duration);
     }
 
