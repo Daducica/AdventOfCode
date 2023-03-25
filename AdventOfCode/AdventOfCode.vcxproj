@@ -146,6 +146,7 @@
     <ClCompile Include="AdventOfCode.cpp" />
     <ClCompile Include="Forest.cpp" />
     <ClCompile Include="ForestCalculatorImplementation.cpp" />
+    <ClCompile Include="MultithreadSolution.cpp" />
     <ClCompile Include="OOPSolution.cpp" />
     <ClCompile Include="OriginalSolution.cpp" />
     <ClCompile Include="ProceduralOptimizedSolution.cpp" />
@@ -157,6 +158,7 @@
   <ItemGroup>
     <ClInclude Include="Forest.hpp" />
     <ClInclude Include="ForestCalculatorImplementation.hpp" />
+    <ClInclude Include="MultithreadSolution.hpp" />
     <ClInclude Include="OOPSolution.hpp" />
     <ClInclude Include="OriginalSolution.hpp" />
     <ClInclude Include="ProceduralOptimizedSolution.hpp" />

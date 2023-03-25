@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <iostream>
 
+#include "MultithreadSolution.hpp"
 #include "OOPSolution.hpp"
 #include "OriginalSolution.hpp"
 #include "ProceduralOptimizedSolution.hpp"
@@ -209,7 +210,7 @@ namespace Test
 
 	void TestProceduralSolution::RunScenicScoreTest () const
 	{
-		ProceduralSolution::GetNumberOfVisibleTreesInForest (testData);
+		ProceduralSolution::GetHighestScenicScoreInForest (testData);
 	}
 
 
@@ -261,7 +262,7 @@ namespace Test
 
 	void TestOptimizedSolution::RunScenicScoreTest () const
 	{
-		OptimizedProceduralSolution::GetNumberOfVisibleTreesInForest (testData);
+		OptimizedProceduralSolution::GetHighestScenicScoreInForest (testData);
 	}
 
 
@@ -313,7 +314,59 @@ namespace Test
 
 	void TestOOPSolution::RunScenicScoreTest () const
 	{
-		OOPSolution::GetNumberOfVisibleTreesInForest (const_cast<OOPSolution::Forest&> (testData));
+		OOPSolution::GetHighestScenicScoreInForest (const_cast<OOPSolution::Forest&> (testData));
+	}
+
+
+	class TestMultithreadSolution : public TestSolution
+	{
+		const std::string testName = "Multithread";
+		const std::string fileName;
+		std::vector<std::vector<short>> testData;
+	public:
+		TestMultithreadSolution (const std::string& fileName);
+		virtual std::string GetTestName () const override;
+		virtual void RunFullSolution () const override;
+		virtual void RunReadTest () const override;
+		virtual void RunVisibilityCountTest () const override;
+		virtual void RunScenicScoreTest () const override;
+	};
+
+
+	TestMultithreadSolution::TestMultithreadSolution (const std::string& fileName) :
+		fileName (fileName),
+		testData (MultithreadSolution::ReadFile (fileName))
+	{
+	}
+
+
+	std::string TestMultithreadSolution::GetTestName () const
+	{
+		return testName;
+	}
+
+
+	void TestMultithreadSolution::RunFullSolution () const
+	{
+		MultithreadSolution::RunMultithreadSolution (fileName);
+	}
+
+
+	void TestMultithreadSolution::RunReadTest () const
+	{
+		MultithreadSolution::ReadFile (fileName);
+	}
+
+
+	void TestMultithreadSolution::RunVisibilityCountTest () const
+	{
+		MultithreadSolution::GetNumberOfVisibleTreesInForest (testData);
+	}
+
+
+	void TestMultithreadSolution::RunScenicScoreTest () const
+	{
+		MultithreadSolution::GetHighestScenicScoreInForest (testData);
 	}
 
 
@@ -380,16 +433,24 @@ namespace Test
 
 	void RunTests (const TestConfig& config)
 	{
+		{ // warmup
+			OriginalSolution::RunOriginalSolution (config.fileName);
+			OriginalSolution::RunOriginalSolution (config.fileName);
+			OriginalSolution::RunOriginalSolution (config.fileName);
+		}
+
 		TestOriginalSolution originalSolution (config.fileName);
 		TestProceduralSolution proceduralSolution (config.fileName);
 		TestOptimizedSolution optimizedSolution (config.fileName);
 		TestOOPSolution oopSolution (config.fileName);
+		TestMultithreadSolution multithreadSolution (config.fileName);
 
 		std::vector<TestSolution*> testSolutions {
 			&originalSolution,
 			&proceduralSolution,
 			&optimizedSolution,
-			&oopSolution
+			&oopSolution,
+			&multithreadSolution
 		};
 
 		if (config.shouldRunFullTest)
