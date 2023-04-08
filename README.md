@@ -8,6 +8,9 @@ The work is not yet finished, but here's a description of the current state of t
 
 I have provided several solutions that approach the problem from different angles. The framework is easily extendable, so it is possible to add or experiment with more solutions. I started with the easiest approach, which is just the "brute force" way of solving the issue (OriginalSolution), then applied some clean coding principles to make the code more readible (ProceduralSolution). I also implemented a faster solution to the first problem (OptimizedSolution) and used object oriented programming to implement yet another solution (OOPSolution). Additionally, I experimented with a version that utilizes threads (MultithreadSolution) and a version that uses the GPU (GPUSolution). I'll give a more detailed explanation of each of these approaches further below.
 
+## Technicalities
+I used Visual Studio C++17 Standard and CUDA Toolkit 12.1 to compile the project. To run the full solution, the CUDA Toolkit should be installed.
+
 ## The Test Framework
 
 I have created a testing framework that can run the implementation of any number of solutions, measure the run times, and compare the results. In a typical project, this framework could be used for unit tests that check for regression or correctness. However, as the ultimate goal of this project is to just experiment with different solutions, and as a consequence there is no actual user/feature code, this is the code I run upon starting the program.
@@ -28,7 +31,7 @@ We can choose which item in the solution vector should be treated as the benchma
 
 ### OOP Solution
 
-### Multithread Soltuion
+### Multithread Solution
 
 ### GPU Solution
 
