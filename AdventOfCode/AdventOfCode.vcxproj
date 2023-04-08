@@ -54,6 +54,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 12.1.props" />
   </ImportGroup>
   <ImportGroup Label="Shared">
   </ImportGroup>
@@ -124,6 +125,9 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <CudaCompile>
+      <CodeGeneration>compute_50,sm_50</CodeGeneration>
+    </CudaCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -141,11 +145,15 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <CudaCompile>
+      <CodeGeneration>compute_50,sm_50</CodeGeneration>
+    </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AdventOfCode.cpp" />
     <ClCompile Include="Forest.cpp" />
     <ClCompile Include="ForestCalculatorImplementation.cpp" />
+    <ClCompile Include="GPUSolution.cpp" />
     <ClCompile Include="MultithreadSolution.cpp" />
     <ClCompile Include="OOPSolution.cpp" />
     <ClCompile Include="OriginalSolution.cpp" />
@@ -158,6 +166,8 @@
   <ItemGroup>
     <ClInclude Include="Forest.hpp" />
     <ClInclude Include="ForestCalculatorImplementation.hpp" />
+    <ClInclude Include="GPUSolution.hpp" />
+    <ClInclude Include="GPUSolutionCUDA.h" />
     <ClInclude Include="MultithreadSolution.hpp" />
     <ClInclude Include="OOPSolution.hpp" />
     <ClInclude Include="OriginalSolution.hpp" />
@@ -167,7 +177,11 @@
     <ClInclude Include="Tree.hpp" />
     <ClInclude Include="Utilities.hpp" />
   </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="GPUSolutionCUDA.cu" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 12.1.targets" />
   </ImportGroup>
 </Project>

@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <iostream>
 
+#include "GPUSolution.hpp"
 #include "MultithreadSolution.hpp"
 #include "OOPSolution.hpp"
 #include "OriginalSolution.hpp"
@@ -369,6 +370,57 @@ namespace Test
 		MultithreadSolution::GetHighestScenicScoreInForest (testData);
 	}
 
+	class TestGPUSolution : public TestSolution
+	{
+		const std::string testName = "GPU\t";
+		const std::string fileName;
+		std::vector<std::vector<short>> testData;
+	public:
+		TestGPUSolution (const std::string& fileName);
+		virtual std::string GetTestName () const override;
+		virtual void RunFullSolution () const override;
+		virtual void RunReadTest () const override;
+		virtual void RunVisibilityCountTest () const override;
+		virtual void RunScenicScoreTest () const override;
+	};
+
+
+	TestGPUSolution::TestGPUSolution (const std::string& fileName) :
+		fileName (fileName),
+		testData (GPUSolution::ReadFile (fileName))
+	{
+	}
+
+
+	std::string TestGPUSolution::GetTestName () const
+	{
+		return testName;
+	}
+
+
+	void TestGPUSolution::RunFullSolution () const
+	{
+		GPUSolution::RunGPUSolution (fileName);
+	}
+
+
+	void TestGPUSolution::RunReadTest () const
+	{
+		GPUSolution::ReadFile (fileName);
+	}
+
+
+	void TestGPUSolution::RunVisibilityCountTest () const
+	{
+		GPUSolution::GetNumberOfVisibleTreesInForest (testData);
+	}
+
+
+	void TestGPUSolution::RunScenicScoreTest () const
+	{
+		GPUSolution::GetHighestScenicScoreInForest (testData);
+	}
+
 
 	static void RunFullTest (int numberOfTestRuns, std::vector<TestSolution*> testSolutions)
 	{
@@ -444,13 +496,15 @@ namespace Test
 		TestOptimizedSolution optimizedSolution (config.fileName);
 		TestOOPSolution oopSolution (config.fileName);
 		TestMultithreadSolution multithreadSolution (config.fileName);
+		TestGPUSolution gpuSolution (config.fileName);
 
 		std::vector<TestSolution*> testSolutions {
 			&originalSolution,
 			&proceduralSolution,
 			&optimizedSolution,
 			&oopSolution,
-			&multithreadSolution
+			&multithreadSolution,
+			&gpuSolution
 		};
 
 		if (config.shouldRunFullTest)

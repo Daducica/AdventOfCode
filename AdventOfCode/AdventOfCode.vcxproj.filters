@@ -48,6 +48,9 @@
     <ClCompile Include="MultithreadSolution.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GPUSolution.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ProceduralSolution.hpp">
@@ -80,5 +83,14 @@
     <ClInclude Include="MultithreadSolution.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GPUSolution.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GPUSolutionCUDA.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="GPUSolutionCUDA.cu" />
   </ItemGroup>
 </Project>
