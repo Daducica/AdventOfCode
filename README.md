@@ -19,7 +19,7 @@ To be able to run the tests, we need to pass in a configuration object that spec
 
 To include a solution in the test runs, we need to implement an adapter class that translates our requests into the target solution's 'language'. This is necessary because we cannot assume that every solution will use the same notation/interface for the different features. Once we have the adapter class, all we need to do is instantiate this class and append the instance to the test solution container that automatically manages everything for us from then on.
 
-We can choose which item in the solution vector should be treated as the benchmark for run time comparisions and value checks (which will be implemented later). As it stands, I use the original solution for benchmarking purposes, but this could be changed if needed.
+We can choose which item in the solution vector should be treated as the benchmark for run time comparisions and value checks. As it stands, I use the original solution for benchmarking purposes, but this could be changed if needed.
 
 ## Solutions
 
@@ -44,7 +44,6 @@ I have included two test matrices into my project. The file named 'day8.txt' con
 ## Remarks
 
 ## TODO items
-- test framework should check for actual results (in addition to runtime)
 - check compiler warnings
 - optimize second task (similarly to the optimization of the first task)
 - finish GPU solution
