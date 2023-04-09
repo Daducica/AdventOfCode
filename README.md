@@ -41,7 +41,11 @@ The OOP solution focuses on reusability and extendability. While it uses the alg
 
 ### Multithread Solution
 
+The multithreaded solution utilizes the parallel std::for_each to make the calculation faster in case there are multiple cores. It has been implemented for the first task only. I expect a significant speedup for larger matrices. In case of small matrices (like the Advent of Code example), setting up the threads may outweigh the benefits of parallelization. It would be worthwile to experiment with custom threading solutions instead of the std::for_each.
+
 ### GPU Solution
+
+
 
 ## Test Data
 
