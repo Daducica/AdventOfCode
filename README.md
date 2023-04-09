@@ -37,14 +37,13 @@ We can choose which item in the solution vector should be treated as the benchma
 
 ## Test Data
 
-I have included two test matrices into my project. The file named 'day8.txt' contains the original matrix that was given in the Advent of Code challenge. Additionally, I generated a larger matrix (file name: 'largeForest.txt') that can also be used for testing purposes, such as tesing for run time scalability. To generate random matrices, I implemented a utility function that accepts the file name and the matrix dimensions as parameters. (Although this function is currently unused, I kept it in the codebase in case it is needed in the future.)
+I have included two test matrices into my project. The file named 'day8.txt' contains the original matrix that was given in the Advent of Code challenge. Additionally, I generated a larger matrix (file name: 'largeForest.txt') that can also be used for testing purposes, such as tesing for run time scalability. To generate random matrices, I implemented a utility function that accepts the file name and the matrix dimensions as parameters. (Although this function is currently unused, I kept it in the codebase in case it is needed in the future.) I have added a third file that could be used to test bad inputs, such as empty file input, matrix with bad dimensions, matrix with bad characters. 
 
 ## Results
 
 ## Remarks
 
 ## TODO items
-- error handling, user input checks
 - test framework should check for actual results (in addition to runtime)
 - check compiler warnings
 - optimize second task (similarly to the optimization of the first task)
