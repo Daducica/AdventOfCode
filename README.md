@@ -25,11 +25,19 @@ We can choose which item in the solution vector should be treated as the benchma
 
 ### Original Solution
 
+The original solution is a naive implementation taht serves only as a benchmark for code readability and runtime comparisions. As a result, I have not optimized or modified it in any way, except for some basic changes that help with testing the code.
+
 ### Procedural Solution
+
+For the procedural solution, I began with the code of the original solution. The purpose of this version was to keep the original algorithm while improving the code's readability. To achieve this, I organized the code into small functions with descriptive names and I renamed the variables so that their purpose is clear. In addition, I saved some frequently used values into local variables, and made variables 'const' wherever possible.
 
 ### Optimized (Procedural) Solution
 
+In the optimized solution, I experimented with my own algorithm that iterates though the matrix only four times (one iteration for each of the four directions) and saves the largest height seen in the row / column so far. This means we are working with an O(n^2) algorithm, instead of O(n^3). I have implemented this logic for the first task, but the same idea can be used for the second task as well (not implemented yet). The purpose of this version is to be as fast as possible while also maintain basic code readability.
+
 ### OOP Solution
+
+The OOP solution focuses on reusability and extendability. While it uses the algorithm behind the optimized solution, and thus it's faster than the original solution, it is expected to be slower than the optimized solution. Allocating memory for custom classes slows down the file read. Working with class instances (and a virtual class) should be more expensive in terms of memory and runtime. On the other hand, storing the results of the calculations means that we can work with the values later on if needed. The classes can be repurposed and extended for future use cases. Decoupling the calculation logic from the data class enables the reuse of the logic in other contexts. The algorithm can be easily swapped out, both at compile time and at runtime, allowing for experimentation and comparision of several different algorithms.
 
 ### Multithread Solution
 
@@ -44,8 +52,8 @@ I have included two test matrices into my project. The file named 'day8.txt' con
 ## Remarks
 
 ## TODO items
-- check compiler warnings
 - optimize second task (similarly to the optimization of the first task)
+- experiment with short vs int and mirrored matrices
 - finish GPU solution
 - syntactic sugar check
 - finish documentation
