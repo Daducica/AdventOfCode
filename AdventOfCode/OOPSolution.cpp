@@ -15,13 +15,13 @@ namespace OOPSolution
 	}
 
 
-	int GetNumberOfVisibleTreesInForest (Forest& forest)
+	uint64_t GetNumberOfVisibleTreesInForest (Forest& forest)
 	{
 		return forest.CalculateAndSaveVisibleTreeCount ();
 	}
 
 
-	int GetHighestScenicScoreInForest (Forest& forest)
+	uint64_t GetHighestScenicScoreInForest (Forest& forest)
 	{
 		return forest.CalculateAndSaveHighestScenicScoreInForest ();
 	}

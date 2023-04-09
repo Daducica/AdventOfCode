@@ -12,7 +12,7 @@ namespace GPUSolution
 	}
 
 
-	int GetNumberOfVisibleTreesInForest (const std::vector<std::vector<short>>& forest)
+	uint64_t GetNumberOfVisibleTreesInForest (const std::vector<std::vector<short>>& forest)
 	{
 		if (forest.size () == 0)
 			return 0;
@@ -21,7 +21,7 @@ namespace GPUSolution
 	}
 
 
-	int GetHighestScenicScoreInForest (const std::vector<std::vector<short>>& forest)
+	uint64_t GetHighestScenicScoreInForest (const std::vector<std::vector<short>>& /*forest*/)
 	{
 		// TODO
 		return 0;

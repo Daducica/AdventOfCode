@@ -8,8 +8,8 @@
 namespace OOPSolution
 {
 	Forest ReadFile (const std::string& fileName);
-	int GetNumberOfVisibleTreesInForest (Forest& forest);
-	int GetHighestScenicScoreInForest (Forest& forest);
+	uint64_t GetNumberOfVisibleTreesInForest (Forest& forest);
+	uint64_t GetHighestScenicScoreInForest (Forest& forest);
 
 	void RunOOPSolution (const std::string& fileName);
 }

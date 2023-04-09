@@ -15,7 +15,7 @@
 
 namespace Test
 {
-	TestConfig::TestConfig (const std::string& fileName, unsigned int numberOfTestRuns,
+	TestConfig::TestConfig (const std::string& fileName, size_t numberOfTestRuns,
 				bool shouldRunFullTest, bool shouldMeasureFileRead,
 				bool shouldRunVisibilityCountTest, bool shouldRunHighestScenicScoreTest) :
 		fileName (fileName),
@@ -32,7 +32,7 @@ namespace Test
 		struct TaskResult
 		{
 			double timeResult;
-			int calculationResult;
+			uint64_t calculationResult;
 		};
 		std::optional<double> fullResult;
 		std::optional<TaskResult> readResult;
@@ -41,67 +41,67 @@ namespace Test
 
 		virtual std::string GetTestName () const = 0;
 		virtual void RunFullSolution () const = 0;
-		virtual int RunReadTest () const = 0;
-		virtual int RunVisibilityCountTest () const = 0;
-		virtual int RunScenicScoreTest () const = 0;
+		virtual size_t RunReadTest () const = 0;
+		virtual uint64_t RunVisibilityCountTest () const = 0;
+		virtual uint64_t RunScenicScoreTest () const = 0;
 		void PrintTimeResultForTask (double taskResult, double benchMark) const;
 		void PrintResultForTask (const TestSolution::TaskResult& taskResult, const TestSolution::TaskResult& benchMark) const;
 	public:
-		void MeasureFullSolutionTest (int numberOfTestRuns);
-		void MeasureReadTest (int numberOfTestRuns);
-		void MeasureVisibilityCountTest (int numberOfTestRuns);
-		void MeasureScenicScoreTest (int numberOfTestRuns);
+		void MeasureFullSolutionTest (size_t numberOfTestRuns);
+		void MeasureReadTest (size_t numberOfTestRuns);
+		void MeasureVisibilityCountTest (size_t numberOfTestRuns);
+		void MeasureScenicScoreTest (size_t numberOfTestRuns);
 
 		virtual ~TestSolution ();
 		void PrintResults (const TestSolution& benchMark) const;
 	};
 
 
-	void TestSolution::MeasureFullSolutionTest (int numberOfTestRuns)
+	void TestSolution::MeasureFullSolutionTest (size_t numberOfTestRuns)
 	{
 		Utilities::MicroSecTimer timer;
 		timer.StartTimer ();
 
-		for (unsigned int i = 0; i < numberOfTestRuns; ++i)
+		for (size_t i = 0; i < numberOfTestRuns; ++i)
 			RunFullSolution ();
 
 		fullResult = (double)timer.StopTimer () / numberOfTestRuns;
 	}
 
 
-	void TestSolution::MeasureReadTest (int numberOfTestRuns)
+	void TestSolution::MeasureReadTest (size_t numberOfTestRuns)
 	{
 		Utilities::MicroSecTimer timer;
 		timer.StartTimer ();
 
-		int calculationResult = 0;
-		for (unsigned int i = 0; i < numberOfTestRuns; ++i)
+		uint64_t calculationResult = 0;
+		for (size_t i = 0; i < numberOfTestRuns; ++i)
 			calculationResult = RunReadTest ();
 
 		readResult = TaskResult { (double)timer.StopTimer () / numberOfTestRuns, calculationResult };
 	}
 
 
-	void TestSolution::MeasureVisibilityCountTest (int numberOfTestRuns)
+	void TestSolution::MeasureVisibilityCountTest (size_t numberOfTestRuns)
 	{
 		Utilities::MicroSecTimer timer;
 		timer.StartTimer ();
 
-		int calculationResult = 0;
-		for (unsigned int i = 0; i < numberOfTestRuns; ++i)
+		uint64_t calculationResult = 0;
+		for (size_t i = 0; i < numberOfTestRuns; ++i)
 			calculationResult = RunVisibilityCountTest ();
 
 		visibilityCountResult = TaskResult { (double)timer.StopTimer () / numberOfTestRuns, calculationResult };
 	}
 
 
-	void TestSolution::MeasureScenicScoreTest (int numberOfTestRuns)
+	void TestSolution::MeasureScenicScoreTest (size_t numberOfTestRuns)
 	{
 		Utilities::MicroSecTimer timer;
 		timer.StartTimer ();
 
-		int calculationResult = 0;
-		for (unsigned int i = 0; i < numberOfTestRuns; ++i)
+		uint64_t calculationResult = 0;
+		for (size_t i = 0; i < numberOfTestRuns; ++i)
 			calculationResult = RunScenicScoreTest ();
 
 		scenicScoreResult = TaskResult { (double)timer.StopTimer () / (double)numberOfTestRuns, calculationResult };
@@ -162,9 +162,9 @@ namespace Test
 		TestOriginalSolution (const std::string& fileName);
 		virtual std::string GetTestName () const override;
 		virtual void RunFullSolution () const override;
-		virtual int RunReadTest () const override;
-		virtual int RunVisibilityCountTest () const override;
-		virtual int RunScenicScoreTest () const override;
+		virtual size_t RunReadTest () const override;
+		virtual uint64_t RunVisibilityCountTest () const override;
+		virtual uint64_t RunScenicScoreTest () const override;
 	};
 
 
@@ -187,7 +187,7 @@ namespace Test
 	}
 
 
-	int TestOriginalSolution::RunReadTest () const
+	size_t TestOriginalSolution::RunReadTest () const
 	{
 		std::vector<std::vector<int>> result = OriginalSolution::ReadFile (fileName);
 		if (result.empty ())
@@ -196,13 +196,13 @@ namespace Test
 	}
 
 
-	int TestOriginalSolution::RunVisibilityCountTest () const
+	uint64_t TestOriginalSolution::RunVisibilityCountTest () const
 	{
 		return OriginalSolution::CalculateVisibilityCount (testData);
 	}
 
 	
-	int TestOriginalSolution::RunScenicScoreTest () const
+	uint64_t TestOriginalSolution::RunScenicScoreTest () const
 	{
 		return OriginalSolution::CalculateHighestScenicScore (testData);
 	}
@@ -217,9 +217,9 @@ namespace Test
 		TestProceduralSolution (const std::string& fileName);
 		virtual std::string GetTestName () const override;
 		virtual void RunFullSolution () const override;
-		virtual int RunReadTest () const override;
-		virtual int RunVisibilityCountTest () const override;
-		virtual int RunScenicScoreTest () const override;
+		virtual size_t RunReadTest () const override;
+		virtual uint64_t RunVisibilityCountTest () const override;
+		virtual uint64_t RunScenicScoreTest () const override;
 	};
 
 
@@ -242,7 +242,7 @@ namespace Test
 	}
 
 
-	int TestProceduralSolution::RunReadTest () const
+	size_t TestProceduralSolution::RunReadTest () const
 	{
 		std::vector<std::vector<short>> result = ProceduralSolution::ReadFile (fileName);
 		if (result.empty ())
@@ -251,13 +251,13 @@ namespace Test
 	}
 
 
-	int TestProceduralSolution::RunVisibilityCountTest () const
+	uint64_t TestProceduralSolution::RunVisibilityCountTest () const
 	{
 		return ProceduralSolution::GetNumberOfVisibleTreesInForest (testData);
 	}
 
 
-	int TestProceduralSolution::RunScenicScoreTest () const
+	uint64_t TestProceduralSolution::RunScenicScoreTest () const
 	{
 		return ProceduralSolution::GetHighestScenicScoreInForest (testData);
 	}
@@ -272,9 +272,9 @@ namespace Test
 		TestOptimizedSolution (const std::string& fileName);
 		virtual std::string GetTestName () const override;
 		virtual void RunFullSolution () const override;
-		virtual int RunReadTest () const override;
-		virtual int RunVisibilityCountTest () const override;
-		virtual int RunScenicScoreTest () const override;
+		virtual size_t RunReadTest () const override;
+		virtual uint64_t RunVisibilityCountTest () const override;
+		virtual uint64_t RunScenicScoreTest () const override;
 	};
 
 
@@ -297,7 +297,7 @@ namespace Test
 	}
 
 
-	int TestOptimizedSolution::RunReadTest () const
+	size_t TestOptimizedSolution::RunReadTest () const
 	{
 		std::vector<std::vector<short>> result = OptimizedProceduralSolution::ReadFile (fileName);
 		if (result.empty ())
@@ -306,13 +306,13 @@ namespace Test
 	}
 
 
-	int TestOptimizedSolution::RunVisibilityCountTest () const
+	uint64_t TestOptimizedSolution::RunVisibilityCountTest () const
 	{
 		return OptimizedProceduralSolution::GetNumberOfVisibleTreesInForest (testData);
 	}
 
 
-	int TestOptimizedSolution::RunScenicScoreTest () const
+	uint64_t TestOptimizedSolution::RunScenicScoreTest () const
 	{
 		return OptimizedProceduralSolution::GetHighestScenicScoreInForest (testData);
 	}
@@ -327,9 +327,9 @@ namespace Test
 		TestOOPSolution (const std::string& fileName);
 		virtual std::string GetTestName () const override;
 		virtual void RunFullSolution () const override;
-		virtual int RunReadTest () const override;
-		virtual int RunVisibilityCountTest () const override;
-		virtual int RunScenicScoreTest () const override;
+		virtual size_t RunReadTest () const override;
+		virtual uint64_t RunVisibilityCountTest () const override;
+		virtual uint64_t RunScenicScoreTest () const override;
 	};
 
 
@@ -352,20 +352,20 @@ namespace Test
 	}
 
 
-	int TestOOPSolution::RunReadTest () const
+	size_t TestOOPSolution::RunReadTest () const
 	{
 		OOPSolution::Forest result = OOPSolution::ReadFile (fileName);
 		return result.GetWidth () * result.GetHeight ();
 	}
 
 
-	int TestOOPSolution::RunVisibilityCountTest () const
+	uint64_t TestOOPSolution::RunVisibilityCountTest () const
 	{
 		return OOPSolution::GetNumberOfVisibleTreesInForest (const_cast<OOPSolution::Forest&> (testData));
 	}
 
 
-	int TestOOPSolution::RunScenicScoreTest () const
+	uint64_t TestOOPSolution::RunScenicScoreTest () const
 	{
 		return OOPSolution::GetHighestScenicScoreInForest (const_cast<OOPSolution::Forest&> (testData));
 	}
@@ -380,9 +380,9 @@ namespace Test
 		TestMultithreadSolution (const std::string& fileName);
 		virtual std::string GetTestName () const override;
 		virtual void RunFullSolution () const override;
-		virtual int RunReadTest () const override;
-		virtual int RunVisibilityCountTest () const override;
-		virtual int RunScenicScoreTest () const override;
+		virtual size_t RunReadTest () const override;
+		virtual uint64_t RunVisibilityCountTest () const override;
+		virtual uint64_t RunScenicScoreTest () const override;
 	};
 
 
@@ -405,7 +405,7 @@ namespace Test
 	}
 
 
-	int TestMultithreadSolution::RunReadTest () const
+	size_t TestMultithreadSolution::RunReadTest () const
 	{
 		std::vector<std::vector<short>> result = MultithreadSolution::ReadFile (fileName);
 		if (result.empty ())
@@ -414,13 +414,13 @@ namespace Test
 	}
 
 
-	int TestMultithreadSolution::RunVisibilityCountTest () const
+	uint64_t TestMultithreadSolution::RunVisibilityCountTest () const
 	{
 		return MultithreadSolution::GetNumberOfVisibleTreesInForest (testData);
 	}
 
 
-	int TestMultithreadSolution::RunScenicScoreTest () const
+	uint64_t TestMultithreadSolution::RunScenicScoreTest () const
 	{
 		return MultithreadSolution::GetHighestScenicScoreInForest (testData);
 	}
@@ -435,9 +435,9 @@ namespace Test
 		TestGPUSolution (const std::string& fileName);
 		virtual std::string GetTestName () const override;
 		virtual void RunFullSolution () const override;
-		virtual int RunReadTest () const override;
-		virtual int RunVisibilityCountTest () const override;
-		virtual int RunScenicScoreTest () const override;
+		virtual size_t RunReadTest () const override;
+		virtual uint64_t RunVisibilityCountTest () const override;
+		virtual uint64_t RunScenicScoreTest () const override;
 	};
 
 
@@ -460,7 +460,7 @@ namespace Test
 	}
 
 
-	int TestGPUSolution::RunReadTest () const
+	size_t TestGPUSolution::RunReadTest () const
 	{
 		std::vector<std::vector<short>> result = GPUSolution::ReadFile (fileName);
 		if (result.empty ())
@@ -469,47 +469,47 @@ namespace Test
 	}
 
 
-	int TestGPUSolution::RunVisibilityCountTest () const
+	uint64_t TestGPUSolution::RunVisibilityCountTest () const
 	{
 		return GPUSolution::GetNumberOfVisibleTreesInForest (testData);
 	}
 
 
-	int TestGPUSolution::RunScenicScoreTest () const
+	uint64_t TestGPUSolution::RunScenicScoreTest () const
 	{
 		return GPUSolution::GetHighestScenicScoreInForest (testData);
 	}
 
 
-	static void RunFullTest (int numberOfTestRuns, std::vector<TestSolution*> testSolutions)
+	static void RunFullTest (size_t numberOfTestRuns, std::vector<TestSolution*> testSolutions)
 	{
 		for (TestSolution* testSolution : testSolutions)
 			testSolution->MeasureFullSolutionTest (numberOfTestRuns);
 	}
 
 
-	static void RunReadTest (int numberOfTestRuns, std::vector<TestSolution*> testSolutions)
+	static void RunReadTest (size_t numberOfTestRuns, std::vector<TestSolution*> testSolutions)
 	{
 		for (TestSolution* testSolution : testSolutions)
 			testSolution->MeasureReadTest (numberOfTestRuns);
 	}
 
 
-	static void RunVisibilityCountTest (int numberOfTestRuns, std::vector<TestSolution*> testSolutions)
+	static void RunVisibilityCountTest (size_t numberOfTestRuns, std::vector<TestSolution*> testSolutions)
 	{
 		for (TestSolution* testSolution : testSolutions)
 			testSolution->MeasureVisibilityCountTest (numberOfTestRuns);
 	}
 
 
-	static void RunScenicScoreTest (int numberOfTestRuns, std::vector<TestSolution*> testSolutions)
+	static void RunScenicScoreTest (size_t numberOfTestRuns, std::vector<TestSolution*> testSolutions)
 	{
 		for (TestSolution* testSolution : testSolutions)
 			testSolution->MeasureScenicScoreTest (numberOfTestRuns);
 	}
 
 
-	void PrintResults (const TestConfig& config, const std::vector<TestSolution*>& testSolutions, unsigned int benchMarkIndex)
+	void PrintResults (const TestConfig& config, const std::vector<TestSolution*>& testSolutions, size_t benchMarkIndex)
 	{
 		std::cout << std::fixed;
 		std::cout << std::setprecision (2);
@@ -545,8 +545,8 @@ namespace Test
 
 	void RunTests (const TestConfig& config)
 	{
-		if (config.numberOfTestRuns <= 0) {
-			std::cout << "Number of test runs cannot be 0 or lower.\n";
+		if (config.numberOfTestRuns == 0) {
+			std::cout << "Number of test runs cannot be 0.\n";
 			return;
 		}
 

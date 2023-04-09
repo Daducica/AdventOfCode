@@ -8,19 +8,19 @@ namespace OOPSolution
 	class ForestCalculatorImplementation : public ForestCalculatorInterface {
 		Forest* forest;
 
-		int CheckAndSaveVisibilityFromLeft () const;
-		int CheckAndSaveVisibilityFromRight () const;
-		int CheckAndSaveVisibilityFromTop () const;
-		int CheckAndSaveVisibilityFromBottom () const;
+		uint64_t CheckAndSaveVisibilityFromLeft () const;
+		uint64_t CheckAndSaveVisibilityFromRight () const;
+		uint64_t CheckAndSaveVisibilityFromTop () const;
+		uint64_t CheckAndSaveVisibilityFromBottom () const;
 
-		int GetNumberOfVisibleTreesToTheLeft (unsigned int i, unsigned int j) const;
-		int GetNumberOfVisibleTreesToTheRight (unsigned int i, unsigned int j) const;
-		int GetNumberOfVisibleTreesToTheTop (unsigned int i, unsigned int j) const;
-		int GetNumberOfVisibleTreesToTheBottom (unsigned int i, unsigned int j) const;
-		int GetScenicScoreForTree (unsigned int i, unsigned int j) const;
+		uint64_t GetNumberOfVisibleTreesToTheLeft (size_t row, size_t col) const;
+		uint64_t GetNumberOfVisibleTreesToTheRight (size_t row, size_t col) const;
+		uint64_t GetNumberOfVisibleTreesToTheTop (size_t row, size_t col) const;
+		uint64_t GetNumberOfVisibleTreesToTheBottom (size_t row, size_t col) const;
+		uint64_t GetScenicScoreForTree (size_t row, size_t col) const;
 	public:
-		virtual int CalculateAndSaveVisibleTreeCount (Forest* forest) override;
-		virtual int CalculateAndSaveHighestScenicScoreInForest (Forest* forest) override;
+		virtual uint64_t CalculateAndSaveVisibleTreeCount (Forest* forest) override;
+		virtual uint64_t CalculateAndSaveHighestScenicScoreInForest (Forest* forest) override;
 	};
 
 

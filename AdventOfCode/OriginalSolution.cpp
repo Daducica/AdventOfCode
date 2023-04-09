@@ -53,7 +53,7 @@ namespace OriginalSolution
                     continue;
                 }
                 v = true;
-                for (int k = m.size () - 1; k > i; k--) {
+                for (int k = int (m.size () - 1); k > i; k--) {
                     if (m[k][j] >= m[i][j]) {
                         v = false;
                         break;
@@ -75,7 +75,7 @@ namespace OriginalSolution
                     continue;
                 }
                 v = true;
-                for (int k = m[0].size () - 1; k > j; k--) {
+                for (int k = int (m[0].size () - 1); k > j; k--) {
                     if (m[i][k] >= m[i][j]) {
                         v = false;
                         break;

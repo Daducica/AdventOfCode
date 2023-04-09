@@ -16,60 +16,60 @@ namespace OOPSolution
 	}
 
 
-	bool Forest::IsTreeOnEdge (int i, int j) const
+	bool Forest::IsTreeOnEdge (size_t row, size_t col) const
 	{
 		if (trees.empty ())
 			return false;
 
-		return i == 0 || j == 0 || i == trees.size () - 1 || j == trees[0].size () - 1;
+		return row == 0 || col == 0 || row == trees.size () - 1 || col == trees[0].size () - 1;
 	}
 
 
-	bool Forest::IsWithinBounds (int i, int j) const
+	bool Forest::IsWithinBounds (size_t row, size_t col) const
 	{
-		return i >= 0 && j >= 0 && i < trees.size () && trees.size () > 0 && j < trees[0].size ();
+		return row < trees.size () && trees.size () > 0 && col < trees[0].size ();
 	}
 
 
-	int Forest::GetWidth () const
+	size_t Forest::GetWidth () const
 	{
 		return trees.empty () ? 0 : trees[0].size ();
 	}
 
 
-	int Forest::GetHeight () const
+	size_t Forest::GetHeight () const
 	{
 		return trees.size ();
 	}
 
 
-	Tree& Forest::GetTree (int i, int j)
+	Tree& Forest::GetTree (size_t row, size_t col)
 	{
-		if (!IsWithinBounds (i, j))
-			Utilities::PrintIndexOutOfBondsMessage (i, j, GetHeight (), GetWidth ());
-		return trees[i][j];
+		if (!IsWithinBounds (row, col))
+			Utilities::PrintIndexOutOfBondsMessage (row, col, GetHeight (), GetWidth ());
+		return trees[row][col];
 	}
 
 
-	const Tree& Forest::GetTree (int i, int j) const
+	const Tree& Forest::GetTree (size_t row, size_t col) const
 	{
-		if (!IsWithinBounds (i, j))
-			Utilities::PrintIndexOutOfBondsMessage (i, j, GetHeight (), GetWidth ());
-		return trees[i][j];
+		if (!IsWithinBounds (row, col))
+			Utilities::PrintIndexOutOfBondsMessage (row, col, GetHeight (), GetWidth ());
+		return trees[row][col];
 	}
 
 
-	int Forest::CalculateAndSaveVisibleTreeCount ()
+	uint64_t Forest::CalculateAndSaveVisibleTreeCount ()
 	{
-		const int result = calculatorImp->CalculateAndSaveVisibleTreeCount (this);
+		const uint64_t result = calculatorImp->CalculateAndSaveVisibleTreeCount (this);
 		numberOfVisibleTrees = result;
 		return result;
 	}
 
 
-	int Forest::CalculateAndSaveHighestScenicScoreInForest ()
+	uint64_t Forest::CalculateAndSaveHighestScenicScoreInForest ()
 	{
-		const int result = calculatorImp->CalculateAndSaveHighestScenicScoreInForest (this);
+		const uint64_t result = calculatorImp->CalculateAndSaveHighestScenicScoreInForest (this);
 		highestScenicScore = result;
 		return result;
 	}
@@ -96,17 +96,17 @@ namespace OOPSolution
 
 		std::string line;
 		std::getline (fileStream, line);
-		const unsigned int width = line.size ();
+		const size_t width = (size_t) line.size ();
 		do {
 			if (line.size () != width) {
 				Utilities::PrintBadLineLengthMessage (forest.trees.size () + 1, fileName);
 				return;
 			}
-			std::vector<Tree> row;
-			for (unsigned int i = 0; i < line.size (); i++) {
-				row.emplace_back (Tree (Utilities::CharDigitToShort (line[i])));
+			std::vector<Tree> rowVector;
+			for (size_t row = 0; row < line.size (); row++) {
+				rowVector.emplace_back (Tree (Utilities::CharDigitToShort (line[row])));
 			}
-			forest.trees.emplace_back (row);
+			forest.trees.emplace_back (rowVector);
 		} while (std::getline (fileStream, line));
 	}
 

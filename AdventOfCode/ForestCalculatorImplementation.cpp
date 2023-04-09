@@ -3,21 +3,20 @@
 namespace OOPSolution
 {
 
-	int ForestCalculatorImplementation::CheckAndSaveVisibilityFromLeft () const
+	uint64_t ForestCalculatorImplementation::CheckAndSaveVisibilityFromLeft () const
 	{
-		const unsigned int width = forest->GetWidth ();
-		const unsigned int height = forest->GetHeight ();
-		int visibleTreeCount = 0;
-		for (unsigned int i = 0; i < height; i++) {
+		const size_t width = forest->GetWidth ();
+		const size_t height = forest->GetHeight ();
+		uint64_t visibleTreeCount = 0;
+		for (size_t row = 0; row < height; row++) {
 			int maxHeightInRow = -1;
-			for (unsigned int j = 0; j < width; j++) {
-				Tree& tree = forest->GetTree (i, j);
+			for (size_t col = 0; col < width; col++) {
+				Tree& tree = forest->GetTree (row, col);
 				const short treeHeight = tree.GetHeight ();
 				if (treeHeight > maxHeightInRow) {
 					maxHeightInRow = treeHeight;
 					if (!tree.IsVisibleFromAnyDirection ())
 						visibleTreeCount++;
-					tree.SetVisibleFromAnyDirection (true);
 					tree.SetVisibleFromLeft (true);
 				}
 			}
@@ -26,21 +25,20 @@ namespace OOPSolution
 	}
 
 
-	int ForestCalculatorImplementation::CheckAndSaveVisibilityFromRight () const
+	uint64_t ForestCalculatorImplementation::CheckAndSaveVisibilityFromRight () const
 	{
-		const unsigned int width = forest->GetWidth ();
-		const unsigned int height = forest->GetHeight ();
-		int visibleTreeCount = 0;
-		for (unsigned int i = 0; i < height; i++) {
+		const size_t width = forest->GetWidth ();
+		const size_t height = forest->GetHeight ();
+		uint64_t visibleTreeCount = 0;
+		for (size_t row = 0; row < height; row++) {
 			int maxHeightInRow = -1;
-			for (int j = width - 1; j >= 0; j--) {
-				Tree& tree = forest->GetTree (i, j);
+			for (std::int32_t col = std::int32_t (width - 1); col >= 0; col--) {
+				Tree& tree = forest->GetTree (row, col);
 				const short treeHeight = tree.GetHeight ();
 				if (treeHeight > maxHeightInRow) {
 					maxHeightInRow = treeHeight;
 					if (!tree.IsVisibleFromAnyDirection ())
 						visibleTreeCount++;
-					tree.SetVisibleFromAnyDirection (true);
 					tree.SetVisibleFromRight (true);
 				}
 			}
@@ -49,21 +47,20 @@ namespace OOPSolution
 	}
 
 
-	int ForestCalculatorImplementation::CheckAndSaveVisibilityFromTop () const
+	uint64_t ForestCalculatorImplementation::CheckAndSaveVisibilityFromTop () const
 	{
-		const unsigned int width = forest->GetWidth ();
-		const unsigned int height = forest->GetHeight ();
-		int visibleTreeCount = 0;
-		for (unsigned int j = 0; j < width; j++) {
+		const size_t width = forest->GetWidth ();
+		const size_t height = forest->GetHeight ();
+		uint64_t visibleTreeCount = 0;
+		for (size_t col = 0; col < width; col++) {
 			int maxHeightInColumn = -1;
-			for (unsigned int i = 0; i < height; i++) {
-				Tree& tree = forest->GetTree (i, j);
+			for (size_t row = 0; row < height; row++) {
+				Tree& tree = forest->GetTree (row, col);
 				const short treeHeight = tree.GetHeight ();
 				if (treeHeight > maxHeightInColumn) {
 					maxHeightInColumn = treeHeight;
 					if (!tree.IsVisibleFromAnyDirection ())
 						visibleTreeCount++;
-					tree.SetVisibleFromAnyDirection (true);
 					tree.SetVisibleFromTop (true);
 				}
 			}
@@ -72,25 +69,24 @@ namespace OOPSolution
 	}
 
 
-	int ForestCalculatorImplementation::CheckAndSaveVisibilityFromBottom () const
+	uint64_t ForestCalculatorImplementation::CheckAndSaveVisibilityFromBottom () const
 	{
-		const unsigned int width = forest->GetWidth ();
-		const unsigned int height = forest->GetHeight ();
+		const size_t width = forest->GetWidth ();
+		const size_t height = forest->GetHeight ();
 
 		if (height == 0 || width == 0)
 			return 0;
 
-		int visibleTreeCount = 0;
-		for (unsigned int j = 0; j < width; j++) {
+		uint64_t visibleTreeCount = 0;
+		for (size_t col = 0; col < width; col++) {
 			int maxHeightInColumn = -1;
-			for (int i = height - 1; i >= 0; i--) {
-				Tree& tree = forest->GetTree (i, j);
+			for (std::int32_t row = std::int32_t (height - 1); row >= 0; row--) {
+				Tree& tree = forest->GetTree (row, col);
 				const short treeHeight = tree.GetHeight ();
 				if (treeHeight > maxHeightInColumn) {
 					maxHeightInColumn = treeHeight;
 					if (!tree.IsVisibleFromAnyDirection ())
 						visibleTreeCount++;
-					tree.SetVisibleFromAnyDirection (true);
 					tree.SetVisibleFromBottom (true);
 				}
 			}
@@ -99,14 +95,14 @@ namespace OOPSolution
 	}
 
 
-	int ForestCalculatorImplementation::CalculateAndSaveVisibleTreeCount (Forest* forestIn)
+	uint64_t ForestCalculatorImplementation::CalculateAndSaveVisibleTreeCount (Forest* forestIn)
 	{
 		forest = forestIn;
 
-		const unsigned int width = forest->GetWidth ();
-		const unsigned int height = forest->GetHeight ();
+		const size_t width = forest->GetWidth ();
+		const size_t height = forest->GetHeight ();
 
-		int visibleTreeCount = CheckAndSaveVisibilityFromLeft ();
+		uint64_t visibleTreeCount = CheckAndSaveVisibilityFromLeft ();
 		visibleTreeCount += CheckAndSaveVisibilityFromRight ();
 		visibleTreeCount += CheckAndSaveVisibilityFromTop ();
 		visibleTreeCount += CheckAndSaveVisibilityFromBottom ();
@@ -115,80 +111,80 @@ namespace OOPSolution
 	}
 
 
-	int ForestCalculatorImplementation::GetNumberOfVisibleTreesToTheLeft (unsigned int i, unsigned int j) const
+	uint64_t ForestCalculatorImplementation::GetNumberOfVisibleTreesToTheTop (size_t row, size_t col) const
 	{
-		int treeCount = 0;
-		const int treeHeight = forest->GetTree (i, j).GetHeight ();
-		for (int k = i - 1; k >= 0; k--) {
+		uint64_t treeCount = 0;
+		const int treeHeight = forest->GetTree (row, col).GetHeight ();
+		for (std::int32_t index = std::int32_t (row - 1); index >= 0; index--) {
 			treeCount++;
-			if (forest->GetTree (k, j).GetHeight () >= treeHeight)
+			if (forest->GetTree (index, col).GetHeight () >= treeHeight)
 				break;
 		}
 		return treeCount;
 	}
 
 
-	int ForestCalculatorImplementation::GetNumberOfVisibleTreesToTheRight (unsigned int i, unsigned int j) const
+	uint64_t ForestCalculatorImplementation::GetNumberOfVisibleTreesToTheBottom (size_t row, size_t col) const
 	{
-		int treeCount = 0;
-		const int treeHeight = forest->GetTree (i, j).GetHeight ();
-		for (unsigned int k = i + 1; k < forest->GetHeight (); k++) {
+		uint64_t treeCount = 0;
+		const int treeHeight = forest->GetTree (row, col).GetHeight ();
+		for (size_t index = row + 1; index < forest->GetHeight (); index++) {
 			treeCount++;
-			if (forest->GetTree (k, j).GetHeight () >= treeHeight)
+			if (forest->GetTree (index, col).GetHeight () >= treeHeight)
 				break;
 		}
 		return treeCount;
 	}
 
 
-	int ForestCalculatorImplementation::GetNumberOfVisibleTreesToTheTop (unsigned int i, unsigned int j) const
+	uint64_t ForestCalculatorImplementation::GetNumberOfVisibleTreesToTheLeft (size_t row, size_t col) const
 	{
-		int treeCount = 0;
-		const int treeHeight = forest->GetTree (i, j).GetHeight ();
-		for (int k = j - 1; k >= 0; k--) {
+		uint64_t treeCount = 0;
+		const int treeHeight = forest->GetTree (row, col).GetHeight ();
+		for (std::int32_t index = std::int32_t (col - 1); index >= 0; index--) {
 			treeCount++;
-			if (forest->GetTree (i, k).GetHeight () >= treeHeight)
+			if (forest->GetTree (row, index).GetHeight () >= treeHeight)
 				break;
 		}
 		return treeCount;
 	}
 
 
-	int ForestCalculatorImplementation::GetNumberOfVisibleTreesToTheBottom (unsigned int i, unsigned int j) const
+	uint64_t ForestCalculatorImplementation::GetNumberOfVisibleTreesToTheRight (size_t row, size_t col) const
 	{
-		int treeCount = 0;
-		const int treeHeight = forest->GetTree (i, j).GetHeight ();
-		for (unsigned int k = j + 1; k < forest->GetWidth (); k++) {
+		uint64_t treeCount = 0;
+		const int treeHeight = forest->GetTree (row, col).GetHeight ();
+		for (size_t index = col + 1; index < forest->GetWidth (); index++) {
 			treeCount++;
-			if (forest->GetTree (i, k).GetHeight () >= treeHeight)
+			if (forest->GetTree (row, index).GetHeight () >= treeHeight)
 				break;
 		}
 		return treeCount;
 	}
 
 
-	int ForestCalculatorImplementation::GetScenicScoreForTree (unsigned int i, unsigned int j) const
+	uint64_t ForestCalculatorImplementation::GetScenicScoreForTree (size_t row, size_t col) const
 	{
-		const int scoreToLeft = GetNumberOfVisibleTreesToTheLeft (i, j);
-		const int scoreToRight = GetNumberOfVisibleTreesToTheRight (i, j);
-		const int scoreToTop = GetNumberOfVisibleTreesToTheTop (i, j);
-		const int scoreToBottom = GetNumberOfVisibleTreesToTheBottom (i, j);
+		const uint64_t scoreToLeft = GetNumberOfVisibleTreesToTheLeft (row, col);
+		const uint64_t scoreToRight = GetNumberOfVisibleTreesToTheRight (row, col);
+		const uint64_t scoreToTop = GetNumberOfVisibleTreesToTheTop (row, col);
+		const uint64_t scoreToBottom = GetNumberOfVisibleTreesToTheBottom (row, col);
 		return scoreToLeft * scoreToRight * scoreToTop * scoreToBottom;
 	}
 
 
-	int ForestCalculatorImplementation::CalculateAndSaveHighestScenicScoreInForest (Forest* forestIn)
+	uint64_t ForestCalculatorImplementation::CalculateAndSaveHighestScenicScoreInForest (Forest* forestIn)
 	{
 		forest = forestIn;
-		int maxScore = 0;
-		const unsigned int width = forest->GetWidth ();
-		for (unsigned int i = 0; i < forest->GetHeight (); i++) {
-			for (unsigned int j = 0; j < width; j++) {
-				if (forest->IsTreeOnEdge (i, j)) {
+		uint64_t maxScore = 0;
+		const size_t width = forest->GetWidth ();
+		for (size_t row = 0; row < forest->GetHeight (); row++) {
+			for (size_t col = 0; col < width; col++) {
+				if (forest->IsTreeOnEdge (row, col)) {
 					continue;
 				}
-				const int scenicScore = GetScenicScoreForTree (i, j);
-				forest->GetTree (i, j).SetScenicScore (scenicScore);
+				const uint64_t scenicScore = GetScenicScoreForTree (row, col);
+				forest->GetTree (row, col).SetScenicScore (scenicScore);
 				if (scenicScore > maxScore)
 					maxScore = scenicScore;
 			}

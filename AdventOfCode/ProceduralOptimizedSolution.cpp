@@ -15,7 +15,7 @@ namespace OptimizedProceduralSolution
     }
 
 
-    static bool IsTreeOnEdge (const Forest& forest, int i, int j)
+    static bool IsTreeOnEdge (const Forest& forest, size_t i, size_t j)
     {
         if (forest.empty ())
             return false;
@@ -23,20 +23,20 @@ namespace OptimizedProceduralSolution
         return i == 0 || j == 0 || i == forest.size () - 1 || j == forest[0].size () - 1;
     }
 
-    static int CheckVisibilityFromLeft (const Forest& forest, VisibilityCache& visibility)
+    static uint64_t CheckVisibilityFromLeft (const Forest& forest, VisibilityCache& visibility)
     {
-        const unsigned int width = forest[0].size ();
-        const unsigned int height = forest.size ();
-        int visibleTreeCount = 0;
-        for (unsigned int i = 0; i < height; ++i) {
+        const size_t width = forest[0].size ();
+        const size_t height = forest.size ();
+        uint64_t visibleTreeCount = 0;
+        for (size_t row = 0; row < height; ++row) {
             int maxHeightInRow = -1;
-            for (unsigned int j = 0; j < width; ++j) {
-                const short treeHeight = forest[i][j];
+            for (size_t col = 0; col < width; ++col) {
+                const short treeHeight = forest[row][col];
                 if (treeHeight > maxHeightInRow) {
                     maxHeightInRow = treeHeight;
-                    if (!visibility[i][j]) {
+                    if (!visibility[row][col]) {
                         ++visibleTreeCount;
-                        visibility[i][j] = true;
+                        visibility[row][col] = true;
                     }
                 }
             }
@@ -45,20 +45,20 @@ namespace OptimizedProceduralSolution
     }
 
 
-    static int CheckVisibilityFromRight (const Forest& forest, VisibilityCache& visibility)
+    static uint64_t CheckVisibilityFromRight (const Forest& forest, VisibilityCache& visibility)
     {
-        const unsigned int width = forest[0].size ();
-        const unsigned int height = forest.size ();
-        int visibleTreeCount = 0;
-        for (unsigned int i = 0; i < height; ++i) {
+        const size_t width = forest[0].size ();
+        const size_t height = forest.size ();
+        uint64_t visibleTreeCount = 0;
+        for (size_t row = 0; row < height; ++row) {
             int maxHeightInRow = -1;
-            for (int j = width - 1; j >= 0; --j) {
-                const short treeHeight = forest[i][j];
+            for (std::int32_t col = std::int32_t (width - 1); col >= 0; --col) {
+                const short treeHeight = forest[row][col];
                 if (treeHeight > maxHeightInRow) {
                     maxHeightInRow = treeHeight;
-                    if (!visibility[i][j]) {
+                    if (!visibility[row][col]) {
                         ++visibleTreeCount;
-                        visibility[i][j] = true;
+                        visibility[row][col] = true;
                     }
                 }
             }
@@ -67,20 +67,20 @@ namespace OptimizedProceduralSolution
     }
 
 
-    static int CheckVisibilityFromTop (const Forest& forest, VisibilityCache& visibility)
+    static uint64_t CheckVisibilityFromTop (const Forest& forest, VisibilityCache& visibility)
     {
-        const unsigned int width = forest[0].size ();
-        const unsigned int height = forest.size ();
-        int visibleTreeCount = 0;
-        for (unsigned int j = 0; j < width; ++j) {
+        const size_t width = forest[0].size ();
+        const size_t height = forest.size ();
+        uint64_t visibleTreeCount = 0;
+        for (size_t col = 0; col < width; ++col) {
             int maxHeightInColumn = -1;
-            for (unsigned int i = 0; i < height; ++i) {
-                const short treeHeight = forest[i][j];
+            for (size_t row = 0; row < height; ++row) {
+                const short treeHeight = forest[row][col];
                 if (treeHeight > maxHeightInColumn) {
                     maxHeightInColumn = treeHeight;
-                    if (!visibility[i][j]) {
+                    if (!visibility[row][col]) {
                         ++visibleTreeCount;
-                        visibility[i][j] = true;
+                        visibility[row][col] = true;
                     }
                 }
             }
@@ -89,20 +89,20 @@ namespace OptimizedProceduralSolution
     }
 
 
-    static int CheckVisibilityFromBottom (const Forest& forest, VisibilityCache& visibility)
+    static uint64_t CheckVisibilityFromBottom (const Forest& forest, VisibilityCache& visibility)
     {
-        const unsigned int width = forest[0].size ();
-        const unsigned int height = forest.size ();
-        int visibleTreeCount = 0;
-        for (unsigned int j = 0; j < width; ++j) {
+        const size_t width = forest[0].size ();
+        const size_t height = forest.size ();
+        uint64_t visibleTreeCount = 0;
+        for (size_t col = 0; col < width; ++col) {
             int maxHeightInColumn = -1;
-            for (int i = height - 1; i >= 0; --i) {
-                const short treeHeight = forest[i][j];
+            for (std::int32_t row = std::int32_t (height - 1); row >= 0; --row) {
+                const short treeHeight = forest[row][col];
                 if (treeHeight > maxHeightInColumn) {
                     maxHeightInColumn = treeHeight;
-                    if (!visibility[i][j]) {
+                    if (!visibility[row][col]) {
                         ++visibleTreeCount;
-                        visibility[i][j] = true;
+                        visibility[row][col] = true;
                     }
                 }
             }
@@ -111,18 +111,18 @@ namespace OptimizedProceduralSolution
     }
 
 
-    int GetNumberOfVisibleTreesInForest (const Forest& forest)
+    uint64_t GetNumberOfVisibleTreesInForest (const Forest& forest)
     {
-        if (forest.size () == 0)
+        if (forest.empty ())
             return 0;
 
-        const unsigned int width = forest[0].size ();
-        const unsigned int height = forest.size ();
+        const size_t width = forest[0].size ();
+        const size_t height = forest.size ();
 
         std::vector<bool> row (width, false);
         VisibilityCache visibility (height, row);
 
-        int visibleTreeCount = CheckVisibilityFromLeft (forest, visibility);
+        uint64_t visibleTreeCount = CheckVisibilityFromLeft (forest, visibility);
         visibleTreeCount += CheckVisibilityFromRight (forest, visibility);
         visibleTreeCount += CheckVisibilityFromTop (forest, visibility);
         visibleTreeCount += CheckVisibilityFromBottom (forest, visibility);
@@ -131,81 +131,81 @@ namespace OptimizedProceduralSolution
     }
 
 
-    static int GetNumberOfVisibleTreesToTheLeft (const Forest& forest, unsigned int i, unsigned int j)
+    static uint64_t GetNumberOfVisibleTreesToTheTop (const Forest& forest, size_t row, size_t col)
     {
-        int treeCount = 0;
-        const int treeHeight = forest[i][j];
-        for (int k = i - 1; k >= 0; k--) {
+        uint64_t treeCount = 0;
+        const int treeHeight = forest[row][col];
+        for (std::int32_t index = std::int32_t (row - 1); index >= 0; index--) {
             treeCount++;
-            if (forest[k][j] >= treeHeight)
+            if (forest[index][col] >= treeHeight)
                 break;
         }
         return treeCount;
     }
 
 
-    static int GetNumberOfVisibleTreesToTheRight (const Forest& forest, unsigned int i, unsigned int j)
+    static uint64_t GetNumberOfVisibleTreesToTheBottom (const Forest& forest, size_t row, size_t col)
     {
-        int treeCount = 0;
-        const int treeHeight = forest[i][j];
-        for (unsigned int k = i + 1; k < forest.size (); k++) {
+        uint64_t treeCount = 0;
+        const int treeHeight = forest[row][col];
+        for (size_t index = row + 1; index < forest.size (); index++) {
             treeCount++;
-            if (forest[k][j] >= treeHeight)
+            if (forest[index][col] >= treeHeight)
                 break;
         }
         return treeCount;
     }
 
 
-    static int GetNumberOfVisibleTreesToTheTop (const Forest& forest, unsigned int i, unsigned int j)
+    static uint64_t GetNumberOfVisibleTreesToTheLeft (const Forest& forest, size_t row, size_t col)
     {
-        int treeCount = 0;
-        const int treeHeight = forest[i][j];
-        for (int k = j - 1; k >= 0; k--) {
+        uint64_t treeCount = 0;
+        const int treeHeight = forest[row][col];
+        for (std::int32_t index = std::int32_t (col - 1); index >= 0; index--) {
             treeCount++;
-            if (forest[i][k] >= treeHeight)
+            if (forest[row][index] >= treeHeight)
                 break;
         }
         return treeCount;
     }
 
 
-    static int GetNumberOfVisibleTreesToTheBottom (const Forest& forest, unsigned int i, unsigned int j)
+    static uint64_t GetNumberOfVisibleTreesToTheRight (const Forest& forest, size_t row, size_t col)
     {
-        int treeCount = 0;
-        const int treeHeight = forest[i][j];
-        for (unsigned int k = j + 1; k < forest[0].size (); k++) {
+        uint64_t treeCount = 0;
+        const int treeHeight = forest[row][col];
+        for (size_t index = col + 1; index < forest[0].size (); index++) {
             treeCount++;
-            if (forest[i][k] >= treeHeight)
+            if (forest[row][index] >= treeHeight)
                 break;
         }
         return treeCount;
     }
 
 
-    static int GetScenicScoreForTree (const Forest& forest, unsigned int i, unsigned int j)
+    static uint64_t GetScenicScoreForTree (const Forest& forest, size_t row, size_t col)
     {
-        const int scoreToLeft = GetNumberOfVisibleTreesToTheLeft (forest, i, j);
-        const int scoreToRight = GetNumberOfVisibleTreesToTheRight (forest, i, j);
-        const int scoreToTop = GetNumberOfVisibleTreesToTheTop (forest, i, j);
-        const int scoreToBottom = GetNumberOfVisibleTreesToTheBottom (forest, i, j);
+        const uint64_t scoreToLeft = GetNumberOfVisibleTreesToTheLeft (forest, row, col);
+        const uint64_t scoreToRight = GetNumberOfVisibleTreesToTheRight (forest, row, col);
+        const uint64_t scoreToTop = GetNumberOfVisibleTreesToTheTop (forest, row, col);
+        const uint64_t scoreToBottom = GetNumberOfVisibleTreesToTheBottom (forest, row, col);
         return scoreToLeft * scoreToRight * scoreToTop * scoreToBottom;
     }
 
 
-    int GetHighestScenicScoreInForest (const Forest& forest)
+    uint64_t GetHighestScenicScoreInForest (const Forest& forest)
     {
-        if (forest.size () == 0)
+        if (forest.empty ())
             return 0;
 
-        int maxScore = 0;
-        const unsigned int width = forest[0].size ();
-        for (unsigned int i = 0; i < forest.size (); ++i) {
-            for (unsigned int j = 0; j < width; ++j) {
-                if (IsTreeOnEdge (forest, i, j)) {
+        uint64_t maxScore = 0;
+        const size_t width = forest[0].size ();
+        for (size_t row = 0; row < forest.size (); ++row) {
+            for (size_t col = 0; col < width; ++col) {
+                if (IsTreeOnEdge (forest, row, col)) {
                     continue;
                 }
-                const int scenicScore = GetScenicScoreForTree (forest, i, j);
+                const uint64_t scenicScore = GetScenicScoreForTree (forest, row, col);
                 if (scenicScore > maxScore)
                     maxScore = scenicScore;
             }

@@ -15,16 +15,16 @@ namespace OOPSolution
 	class ForestCalculatorInterface
 	{
 	public:
-		virtual int CalculateAndSaveVisibleTreeCount (Forest* forest) = 0;
-		virtual int CalculateAndSaveHighestScenicScoreInForest (Forest* forest) = 0;
+		virtual uint64_t CalculateAndSaveVisibleTreeCount (Forest* forest) = 0;
+		virtual uint64_t CalculateAndSaveHighestScenicScoreInForest (Forest* forest) = 0;
 		virtual ~ForestCalculatorInterface ();
 	};
 
 	class Forest
 	{
 		std::vector<std::vector<Tree>> trees;
-		std::optional<int> numberOfVisibleTrees;
-		std::optional<int> highestScenicScore;
+		std::optional<uint64_t> numberOfVisibleTrees;
+		std::optional<uint64_t> highestScenicScore;
 
 		std::unique_ptr<ForestCalculatorInterface> calculatorImp;
 
@@ -32,14 +32,14 @@ namespace OOPSolution
 
 	public:
 		Forest (const std::string& fileName, std::unique_ptr<ForestCalculatorInterface> impl);
-		int CalculateAndSaveVisibleTreeCount ();
-		int CalculateAndSaveHighestScenicScoreInForest ();
-		bool IsTreeOnEdge (int i, int j) const;
-		bool IsWithinBounds (int i, int j) const;
-		int GetWidth () const;
-		int GetHeight () const;
-		Tree& GetTree (int i, int j);
-		const Tree& GetTree (int i, int j) const;
+		uint64_t CalculateAndSaveVisibleTreeCount ();
+		uint64_t CalculateAndSaveHighestScenicScoreInForest ();
+		bool IsTreeOnEdge (size_t row, size_t col) const;
+		bool IsWithinBounds (size_t row, size_t col) const;
+		size_t GetWidth () const;
+		size_t GetHeight () const;
+		Tree& GetTree (size_t row, size_t col);
+		const Tree& GetTree (size_t row, size_t col) const;
 
 		static void ReadForest (const std::string& fileName, Forest& forest);
 	};

@@ -7,15 +7,15 @@
 namespace GPUSolution
 {
     static __global__ void CheckVisibilityFromLeft_Kernel (bool* visibility, const short* forest,
-                                                          unsigned int width, unsigned int height)
+                                                           size_t width, size_t height)
     {
         size_t row {blockIdx.x * blockDim.x + threadIdx.x};
         if (row >= height)
             return;
 
         int maxHeightInRow = -1;
-        for (unsigned int column = 0; column < width; ++column) {
-            int index = row * width + column;
+        for (size_t column = 0; column < width; ++column) {
+            size_t index = row * width + column;
             const short treeHeight = forest[index];
 
             if (treeHeight > maxHeightInRow) {
@@ -29,15 +29,15 @@ namespace GPUSolution
 
 
     static __global__ void CheckVisibilityFromRight_Kernel (bool* visibility, const short* forest,
-                                                            unsigned int width, unsigned int height)
+                                                            size_t width, size_t height)
     {
         size_t row {blockIdx.x * blockDim.x + threadIdx.x};
         if (row >= height)
             return;
 
         int maxHeightInRow = -1;
-        for (int column = width - 1; column >= 0; --column) {
-            int index = row * width + column;
+        for (int column = int (width - 1); column >= 0; --column) {
+            size_t index = row * width + column;
             const short treeHeight = forest[index];
 
             if (treeHeight > maxHeightInRow) {
@@ -51,15 +51,15 @@ namespace GPUSolution
 
 
     static __global__ void CheckVisibilityFromTop_Kernel (bool* visibility, const short* forest,
-                                                          unsigned int width, unsigned int height)
+                                                          size_t width, size_t height)
     {
         size_t column {blockIdx.x * blockDim.x + threadIdx.x};
         if (column >= width)
             return;
 
         int maxHeightInRow = -1;
-        for (unsigned int row = 0; row < height; ++row) {
-            int index = row * width + column;
+        for (size_t row = 0; row < height; ++row) {
+            size_t index = row * width + column;
             const short treeHeight = forest[index];
 
             if (treeHeight > maxHeightInRow) {
@@ -73,15 +73,15 @@ namespace GPUSolution
 
 
     static __global__ void CheckVisibilityFromBottom_Kernel (bool* visibility, const short* forest,
-                                                          unsigned int width, unsigned int height)
+                                                             size_t width, size_t height)
     {
         size_t column {blockIdx.x * blockDim.x + threadIdx.x};
         if (column >= width)
             return;
 
         int maxHeightInRow = -1;
-        for (int row = height - 1; row >= 0; --row) {
-            int index = row * width + column;
+        for (int row = int (height - 1); row >= 0; --row) {
+            size_t index = row * width + column;
             const short treeHeight = forest[index];
 
             if (treeHeight > maxHeightInRow) {
@@ -95,9 +95,9 @@ namespace GPUSolution
 
 
     static cudaError_t CheckVisibilityFromLeft (bool* visibility, const short* forest,
-                                                unsigned int width, unsigned int height)
+                                                size_t width, size_t height)
     {
-        unsigned int arraySize = width * height;
+        size_t arraySize = width * height;
 
         short* deviceForest;
         bool* deviceVisibility;
@@ -137,10 +137,10 @@ namespace GPUSolution
             printf ("Matrix dimensions are too large.\n");
             goto Error;
         }
-        CheckVisibilityFromLeft_Kernel <<<1, height>>> (deviceVisibility, deviceForest, width, height);
-        CheckVisibilityFromRight_Kernel <<<1, height>>> (deviceVisibility, deviceForest, width, height);
-        CheckVisibilityFromTop_Kernel <<<1, width>>> (deviceVisibility, deviceForest, width, height);
-        CheckVisibilityFromBottom_Kernel <<<1, width>>> (deviceVisibility, deviceForest, width, height);
+        CheckVisibilityFromLeft_Kernel <<<1, (int)height>>> (deviceVisibility, deviceForest, width, height);
+        CheckVisibilityFromRight_Kernel <<<1, (int)height>>> (deviceVisibility, deviceForest, width, height);
+        CheckVisibilityFromTop_Kernel <<<1, (int)width>>> (deviceVisibility, deviceForest, width, height);
+        CheckVisibilityFromBottom_Kernel <<<1, (int)width>>> (deviceVisibility, deviceForest, width, height);
 
         cudaStatus = cudaGetLastError ();
         if (cudaStatus != cudaSuccess) {
@@ -170,13 +170,13 @@ namespace GPUSolution
 
     static short* Convert2DVectorTo1DArray (const std::vector<std::vector<short>>&forest)
     {
-        const int height = forest.size ();
-        const int width = forest[0].size ();
-        const int arraySize = height * width;
+        const size_t height = forest.size ();
+        const size_t width = forest[0].size ();
+        const size_t arraySize = height * width;
 
         short* array = new short [arraySize];
-        for (unsigned int row = 0; row < height; row++) {
-            for (unsigned int col = 0; col < width; col++) {
+        for (size_t row = 0; row < height; row++) {
+            for (size_t col = 0; col < width; col++) {
                 array[row*width + col] = forest[row][col];
             }
         }
@@ -184,11 +184,11 @@ namespace GPUSolution
     }
 
 
-    int RunVisibleTreeCalculationOnGPU (const std::vector<std::vector<short>>& forest)
+    uint64_t RunVisibleTreeCalculationOnGPU (const std::vector<std::vector<short>>& forest)
     {
-        const int height = forest.size ();
-        const int width = forest[0].size ();
-        const int arraySize = height * width;
+        const size_t height = forest.size ();
+        const size_t width = forest[0].size ();
+        const size_t arraySize = height * width;
 
         short* forestArray = Convert2DVectorTo1DArray (forest);
         bool* visibility = new bool[arraySize];
@@ -206,8 +206,8 @@ namespace GPUSolution
             return 1;
         }
 
-        int visibilityCount = 0;
-        for (unsigned int index = 0; index < arraySize; index++)
+        uint64_t visibilityCount = 0;
+        for (size_t index = 0; index < arraySize; index++)
             if (visibility[index])
                 visibilityCount++;
 

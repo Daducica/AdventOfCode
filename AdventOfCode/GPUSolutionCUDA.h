@@ -5,7 +5,7 @@
 
 namespace GPUSolution
 {
-	int RunVisibleTreeCalculationOnGPU (const std::vector<std::vector<short>>& forest);
+	uint64_t RunVisibleTreeCalculationOnGPU (const std::vector<std::vector<short>>& forest);
 }
 
 

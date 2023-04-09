@@ -10,11 +10,11 @@ namespace Utilities
 {
 	std::vector<std::vector<short>> ReadForest (const std::string& fileName);
 	short CharDigitToShort (char c);
-	void GenerateNewForestFile (const std::string& fileName, int height, int width);
+	void GenerateNewForestFile (const std::string& fileName, size_t height, size_t width);
 
 	void PrintFileNotFoundMessage (const std::string& fileName);
-	void PrintBadLineLengthMessage (short lineNumber, const std::string& fileName);
-	void PrintIndexOutOfBondsMessage (int i, int j, int height, int width);
+	void PrintBadLineLengthMessage (size_t lineNumber, const std::string& fileName);
+	void PrintIndexOutOfBondsMessage (size_t i, size_t j, size_t height, size_t width);
 	void PrintNonDigitCharMessage (char c);
 
 	class MicroSecTimer {

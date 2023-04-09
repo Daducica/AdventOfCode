@@ -11,43 +11,31 @@ namespace ProceduralSolution
     }
 
 
-    static bool IsTreeOnEdge (const std::vector<std::vector<short>>& forest, int i, int j)
+    static bool IsTreeOnEdge (const std::vector<std::vector<short>>& forest, size_t row, size_t col)
     {
         if (forest.empty ())
             return false;
 
-        return i == 0 || j == 0 || i == forest.size () - 1 || j == forest[0].size () - 1;
+        return row == 0 || col == 0 || row == forest.size () - 1 || col == forest[0].size () - 1;
     }
 
 
-    static bool IsTreeVisibleFromLeft (const std::vector<std::vector<short>>& forest, unsigned int i, unsigned int j)
+    static bool IsTreeVisibleFromTop (const std::vector<std::vector<short>>& forest, size_t row, size_t col)
     {
-        const int treeHeight = forest[i][j];
-        for (unsigned int k = 0; k < i; k++) {
-            if (forest[k][j] >= treeHeight) {
+        const int treeHeight = forest[row][col];
+        for (size_t index = 0; index < row; index++) {
+            if (forest[index][col] >= treeHeight) {
                 return false;
             }
         }
         return true;
     }
 
-    static bool IsTreeVisibleFromRight (const std::vector<std::vector<short>>& forest, unsigned int i, unsigned int j)
+    static bool IsTreeVisibleFromBottom (const std::vector<std::vector<short>>& forest, size_t row, size_t col)
     {
-        const int treeHeight = forest[i][j];
-        for (unsigned int k = forest.size () - 1; k > i; k--) {
-            if (forest[k][j] >= treeHeight) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-
-    static bool IsTreeVisibleFromTop (const std::vector<std::vector<short>>& forest, unsigned int i, unsigned int j)
-    {
-        const int treeHeight = forest[i][j];
-        for (unsigned int k = 0; k < j; k++) {
-            if (forest[i][k] >= treeHeight) {
+        const int treeHeight = forest[row][col];
+        for (size_t index = forest.size () - 1; index > row; index--) {
+            if (forest[index][col] >= treeHeight) {
                 return false;
             }
         }
@@ -55,11 +43,11 @@ namespace ProceduralSolution
     }
 
 
-    static bool IsTreeVisibleFromBottom (const std::vector<std::vector<short>>& forest, unsigned int i, unsigned int j)
+    static bool IsTreeVisibleFromLeft (const std::vector<std::vector<short>>& forest, size_t row, size_t col)
     {
-        const int treeHeight = forest[i][j];
-        for (unsigned int k = forest[0].size () - 1; k > j; k--) {
-            if (forest[i][k] >= treeHeight) {
+        const int treeHeight = forest[row][col];
+        for (size_t index = 0; index < col; index++) {
+            if (forest[row][index] >= treeHeight) {
                 return false;
             }
         }
@@ -67,45 +55,49 @@ namespace ProceduralSolution
     }
 
 
-    static bool IsTreeVisible (const std::vector<std::vector<short>>& forest, unsigned int i, unsigned int j)
+    static bool IsTreeVisibleFromRight (const std::vector<std::vector<short>>& forest, size_t row, size_t col)
     {
-        if (IsTreeOnEdge (forest, i, j))
+        const int treeHeight = forest[row][col];
+        for (size_t index = forest[0].size () - 1; index > col; index--) {
+            if (forest[row][index] >= treeHeight) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    static bool IsTreeVisible (const std::vector<std::vector<short>>& forest, size_t row, size_t col)
+    {
+        if (IsTreeOnEdge (forest, row, col))
             return true;
 
-        if (IsTreeVisibleFromLeft (forest, i, j))
+        if (IsTreeVisibleFromLeft (forest, row, col))
             return true;
 
-        if (IsTreeVisibleFromRight (forest, i, j))
+        if (IsTreeVisibleFromRight (forest, row, col))
             return true;
 
-        if (IsTreeVisibleFromTop (forest, i, j))
+        if (IsTreeVisibleFromTop (forest, row, col))
             return true;
 
-        if (IsTreeVisibleFromBottom (forest, i, j))
+        if (IsTreeVisibleFromBottom (forest, row, col))
             return true;
 
         return false;
     }
 
 
-    static int  GetEdgeTreeCount (const std::vector<std::vector<short>>& forest)
-    {
-        const unsigned int width = forest[0].size ();
-        const unsigned int height = forest.size ();
-        return 2 * width + 2 * height * 2 - 4;
-    }
-
-
-    int GetNumberOfVisibleTreesInForest (const std::vector<std::vector<short>>& forest)
+    uint64_t GetNumberOfVisibleTreesInForest (const std::vector<std::vector<short>>& forest)
     {
         if (forest.empty ())
             return 0;
 
-        int visibleTreeCount = 0;
-        const unsigned int width = forest[0].size ();
-        for (unsigned int i = 0; i < forest.size (); i++) {
-            for (unsigned int j = 0; j < width; j++) {
-                if (IsTreeVisible (forest, i, j))
+        uint64_t visibleTreeCount = 0;
+        const size_t width = forest[0].size ();
+        for (size_t row = 0; row < forest.size (); row++) {
+            for (size_t col = 0; col < width; col++) {
+                if (IsTreeVisible (forest, row, col))
                     visibleTreeCount++;
             }
         }
@@ -113,81 +105,81 @@ namespace ProceduralSolution
     }
 
 
-    static int GetNumberOfVisibleTreesToTheLeft (const std::vector<std::vector<short>>& forest, unsigned int i, unsigned int j)
+    static uint64_t GetNumberOfVisibleTreesToTheTop (const std::vector<std::vector<short>>& forest, size_t row, size_t col)
     {
-        int treeCount = 0;
-        const int treeHeight = forest[i][j];
-        for (int k = i - 1; k >= 0; k--) {
+        uint64_t treeCount = 0;
+        const int treeHeight = forest[row][col];
+        for (std::int32_t index = std::int32_t (row - 1); index >= 0; index--) {
             treeCount++;
-            if (forest[k][j] >= treeHeight)
+            if (forest[index][col] >= treeHeight)
                 break;
         }
         return treeCount;
     }
 
 
-    static int GetNumberOfVisibleTreesToTheRight (const std::vector<std::vector<short>>& forest, unsigned int i, unsigned int j)
+    static uint64_t GetNumberOfVisibleTreesToTheBottom (const std::vector<std::vector<short>>& forest, size_t row, size_t col)
     {
-        int treeCount = 0;
-        const int treeHeight = forest[i][j];
-        for (unsigned int k = i + 1; k < forest.size (); k++) {
+        uint64_t treeCount = 0;
+        const int treeHeight = forest[row][col];
+        for (size_t index = row + 1; index < forest.size (); index++) {
             treeCount++;
-            if (forest[k][j] >= treeHeight)
+            if (forest[index][col] >= treeHeight)
                 break;
         }
         return treeCount;
     }
 
 
-    static int GetNumberOfVisibleTreesToTheTop (const std::vector<std::vector<short>>& forest, unsigned int i, unsigned int j)
+    static uint64_t GetNumberOfVisibleTreesToTheLeft (const std::vector<std::vector<short>>& forest, size_t row, size_t col)
     {
-        int treeCount = 0;
-        const int treeHeight = forest[i][j];
-        for (int k = j - 1; k >= 0; k--) {
+        uint64_t treeCount = 0;
+        const int treeHeight = forest[row][col];
+        for (std::int32_t index = std::int32_t (col - 1); index >= 0; index--) {
             treeCount++;
-            if (forest[i][k] >= treeHeight)
+            if (forest[row][index] >= treeHeight)
                 break;
         }
         return treeCount;
     }
 
 
-    static int GetNumberOfVisibleTreesToTheBottom (const std::vector<std::vector<short>>& forest, unsigned int i, unsigned int j)
+    static uint64_t GetNumberOfVisibleTreesToTheRight (const std::vector<std::vector<short>>& forest, size_t row, size_t col)
     {
-        int treeCount = 0;
-        const int treeHeight = forest[i][j];
-        for (unsigned int k = j + 1; k < forest[0].size (); k++) {
+        uint64_t treeCount = 0;
+        const int treeHeight = forest[row][col];
+        for (size_t index = col + 1; index < forest[0].size (); index++) {
             treeCount++;
-            if (forest[i][k] >= treeHeight)
+            if (forest[row][index] >= treeHeight)
                 break;
         }
         return treeCount;
     }
 
 
-    static int GetScenicScoreForTree (const std::vector<std::vector<short>>& forest, unsigned int i, unsigned int j)
+    static uint64_t GetScenicScoreForTree (const std::vector<std::vector<short>>& forest, size_t row, size_t col)
     {
-        const int scoreToLeft = GetNumberOfVisibleTreesToTheLeft (forest, i, j);
-        const int scoreToRight = GetNumberOfVisibleTreesToTheRight (forest, i, j);
-        const int scoreToTop = GetNumberOfVisibleTreesToTheTop (forest, i, j);
-        const int scoreToBottom = GetNumberOfVisibleTreesToTheBottom (forest, i, j);
+        const uint64_t scoreToLeft = GetNumberOfVisibleTreesToTheLeft (forest, row, col);
+        const uint64_t scoreToRight = GetNumberOfVisibleTreesToTheRight (forest, row, col);
+        const uint64_t scoreToTop = GetNumberOfVisibleTreesToTheTop (forest, row, col);
+        const uint64_t scoreToBottom = GetNumberOfVisibleTreesToTheBottom (forest, row, col);
         return scoreToLeft * scoreToRight * scoreToTop * scoreToBottom;
     }
 
 
-    int GetHighestScenicScoreInForest (const std::vector<std::vector<short>>& forest)
+    uint64_t GetHighestScenicScoreInForest (const std::vector<std::vector<short>>& forest)
     {
         if (forest.empty ())
             return 0;
 
-        int maxScore = 0;
-        const unsigned int width = forest[0].size ();
-        for (unsigned int i = 0; i < forest.size (); i++) {
-            for (unsigned int j = 0; j < width; j++) {
-                if (IsTreeOnEdge (forest, i, j)) {
+        uint64_t maxScore = 0;
+        const size_t width = forest[0].size ();
+        for (size_t row = 0; row < forest.size (); row++) {
+            for (size_t col = 0; col < width; col++) {
+                if (IsTreeOnEdge (forest, row, col)) {
                     continue;
                 }
-                const int scenicScore = GetScenicScoreForTree (forest, i, j);
+                const uint64_t scenicScore = GetScenicScoreForTree (forest, row, col);
                 if (scenicScore > maxScore)
                     maxScore = scenicScore;
             }

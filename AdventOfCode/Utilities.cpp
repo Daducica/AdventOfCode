@@ -18,14 +18,14 @@ namespace Utilities
 
         std::string line;
         std::getline (fileStream, line);
-        const unsigned int width = line.size ();
+        const size_t width = line.size ();
         do {
             if (line.size () != width) {
                 PrintBadLineLengthMessage (forest.size () + 1, fileName);
                 return forest;
             }
             std::vector<short> row (width);
-            for (unsigned int i = 0; i < width; i++) {
+            for (size_t i = 0; i < width; i++) {
                 row[i] = CharDigitToShort (line[i]);
             }
             forest.emplace_back (row);
@@ -46,7 +46,7 @@ namespace Utilities
     }
 
 
-    void GenerateNewForestFile (const std::string& fileName, int height, int width)
+    void GenerateNewForestFile (const std::string& fileName, size_t height, size_t width)
     {
         std::ofstream file;
         file.open (fileName);
@@ -72,14 +72,14 @@ namespace Utilities
     }
 
 
-    void PrintBadLineLengthMessage (short lineNumber, const std::string& fileName)
+    void PrintBadLineLengthMessage (size_t lineNumber, const std::string& fileName)
     {
         std::cout << "Length of line " << lineNumber
             << " differs from that of the earlier lines. (File name = " << fileName << ")" << std::endl;
     }
 
 
-    void PrintIndexOutOfBondsMessage (int i, int j, int height, int width)
+    void PrintIndexOutOfBondsMessage (size_t i, size_t j, size_t height, size_t width)
     {
         std::cout << "Index out of bonds error: trying to reach index (" << i << ", " << j << ")"
             << " while dimensions are (" << height << ", " << width << ")" << std::endl;
