@@ -6,7 +6,7 @@ https://adventofcode.com/2022/day/8
 
 The work is not yet finished, but here's a description of the current state of the project.
 
-I have provided several solutions that approach the problem from different angles. The framework is easily extendable, so it is possible to add or experiment with more solutions. I started with the easiest approach, which is just the "brute force" way of solving the issue (OriginalSolution), then applied some clean coding principles to make the code more readible (ProceduralSolution). I also implemented a faster solution to the first problem (OptimizedSolution) and used object oriented programming to implement yet another solution (OOPSolution). Additionally, I experimented with a version that utilizes threads (MultithreadSolution) and a version that uses the GPU (GPUSolution). I'll give a more detailed explanation of each of these approaches further below.
+I have provided several solutions that approach the problem from different angles. The framework is easily extendable, so it is possible to add or experiment with more solutions. I started with the easiest approach, which is just the 'brute force' way of solving the issue (OriginalSolution), then applied some clean coding principles to make the code more readible (ProceduralSolution). I also implemented a faster solution to the first problem (OptimizedSolution) and used object oriented programming to implement yet another solution (OOPSolution). Additionally, I experimented with a version that utilizes threads (MultithreadSolution) and a version that uses the GPU (GPUSolution). I'll give a more detailed explanation of each of these approaches further below.
 
 ## Technicalities
 I used Visual Studio C++17 Standard and CUDA Toolkit 12.1 to compile the project. To run the full solution, the CUDA Toolkit should be installed.
@@ -19,7 +19,7 @@ To be able to run the tests, we need to pass in a configuration object that spec
 
 To include a solution in the test runs, we need to implement an adapter class that translates our requests into the target solution's 'language'. This is necessary because we cannot assume that every solution will use the same notation/interface for the different features. Once we have the adapter class, all we need to do is instantiate this class and append the instance to the test solution container that automatically manages everything for us from then on.
 
-We can choose which item in the solution vector should be treated as the benchmark for run time comparision and value checks (which will be implemented later). As it stands, I use the original solution for benchmarking purposes, but this could be changed if needed.
+We can choose which item in the solution vector should be treated as the benchmark for run time comparisions and value checks (which will be implemented later). As it stands, I use the original solution for benchmarking purposes, but this could be changed if needed.
 
 ## Solutions
 
