@@ -17,12 +17,12 @@ namespace Utilities
 	void PrintIndexOutOfBondsMessage (int i, int j, int height, int width);
 	void PrintNonDigitCharMessage (char c);
 
-	class MilliSecTimer {
+	class MicroSecTimer {
 		using Time = std::chrono::time_point<std::chrono::high_resolution_clock>;
 		Time startTime;
 	public:
 		void StartTimer ();
-		int  StopTimer (const std::optional<std::string>& message = std::nullopt);
+		long long  StopTimer (const std::optional<std::string>& message = std::nullopt);
 	};
 }
 

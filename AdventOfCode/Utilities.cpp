@@ -92,19 +92,19 @@ namespace Utilities
     }
 
 
-    void MilliSecTimer::StartTimer ()
+    void MicroSecTimer::StartTimer ()
     {
         startTime = std::chrono::high_resolution_clock::now ();
     }
 
 
-    int MilliSecTimer::StopTimer (const std::optional<std::string>& message /*= std::nullopt*/)
+    long long MicroSecTimer::StopTimer (const std::optional<std::string>& message /*= std::nullopt*/)
     {
-        Time stopTime = std::chrono::high_resolution_clock::now ();
-        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stopTime - startTime).count ();
+        const Time stopTime = std::chrono::high_resolution_clock::now ();
+        const long long duration = std::chrono::duration_cast<std::chrono::microseconds>(stopTime - startTime).count ();
         if (message.has_value ())
-            std::cout << message.value () << duration << "ms" << std::endl;
-        return static_cast <int> (duration);
+            std::cout << message.value () << duration << "microsec" << std::endl;
+        return duration;
     }
 
 
