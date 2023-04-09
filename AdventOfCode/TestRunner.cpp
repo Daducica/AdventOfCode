@@ -15,6 +15,18 @@
 
 namespace Test
 {
+	TestConfig::TestConfig (const std::string& fileName, unsigned int numberOfTestRuns,
+				bool shouldRunFullTest, bool shouldMeasureFileRead,
+				bool shouldRunVisibilityCountTest, bool shouldRunHighestScenicScoreTest) :
+		fileName (fileName),
+		numberOfTestRuns (numberOfTestRuns),
+		shouldRunFullTest (shouldRunFullTest),
+		shouldMeasureFileRead (shouldMeasureFileRead),
+		shouldRunVisibilityCountTest (shouldRunVisibilityCountTest),
+		shouldRunHighestScenicScoreTest (shouldRunHighestScenicScoreTest)
+	{ }
+
+
 	class TestSolution
 	{
 		std::optional<int> fullResult;
@@ -110,6 +122,7 @@ namespace Test
 		}
 		std::cout << std::endl;
 	}
+
 
 	class TestOriginalSolution : public TestSolution
 	{

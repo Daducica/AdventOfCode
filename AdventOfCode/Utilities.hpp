@@ -9,8 +9,13 @@
 namespace Utilities
 {
 	std::vector<std::vector<short>> ReadForest (const std::string& fileName);
-	inline short CharToShort (char c);
+	short CharDigitToShort (char c);
 	void GenerateNewForestFile (const std::string& fileName, int height, int width);
+
+	void PrintFileNotFoundMessage (const std::string& fileName);
+	void PrintBadLineLengthMessage (short lineNumber, const std::string& fileName);
+	void PrintIndexOutOfBondsMessage (int i, int j, int height, int width);
+	void PrintNonDigitCharMessage (char c);
 
 	class MilliSecTimer {
 		using Time = std::chrono::time_point<std::chrono::high_resolution_clock>;

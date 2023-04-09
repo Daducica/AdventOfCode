@@ -35,10 +35,11 @@ namespace OOPSolution
 		int CalculateAndSaveVisibleTreeCount ();
 		int CalculateAndSaveHighestScenicScoreInForest ();
 		bool IsTreeOnEdge (int i, int j) const;
-		int GetWidth() { return trees.empty () ? 0 : trees[0].size (); }
-		int GetHeight () { return trees.size (); }
-		Tree& GetTree (int i, int j) { return trees[i][j]; }
-		const Tree& GetTree (int i, int j) const { return trees[i][j]; }
+		bool IsWithinBounds (int i, int j) const;
+		int GetWidth () const;
+		int GetHeight () const;
+		Tree& GetTree (int i, int j);
+		const Tree& GetTree (int i, int j) const;
 
 		static void ReadForest (const std::string& fileName, Forest& forest);
 	};

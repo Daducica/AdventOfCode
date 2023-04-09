@@ -17,6 +17,9 @@ namespace OptimizedProceduralSolution
 
     static bool IsTreeOnEdge (const Forest& forest, int i, int j)
     {
+        if (forest.empty ())
+            return false;
+
         return i == 0 || j == 0 || i == forest.size () - 1 || j == forest[0].size () - 1;
     }
 
@@ -110,6 +113,9 @@ namespace OptimizedProceduralSolution
 
     int GetNumberOfVisibleTreesInForest (const Forest& forest)
     {
+        if (forest.size () == 0)
+            return 0;
+
         const unsigned int width = forest[0].size ();
         const unsigned int height = forest.size ();
 
@@ -189,6 +195,9 @@ namespace OptimizedProceduralSolution
 
     int GetHighestScenicScoreInForest (const Forest& forest)
     {
+        if (forest.size () == 0)
+            return 0;
+
         int maxScore = 0;
         const unsigned int width = forest[0].size ();
         for (unsigned int i = 0; i < forest.size (); ++i) {

@@ -17,6 +17,9 @@ namespace MultithreadSolution
 
     static bool IsTreeOnEdge (const Forest& forest, int i, int j)
     {
+        if (forest.empty ())
+            return false;
+
         return i == 0 || j == 0 || i == forest.size () - 1 || j == forest[0].size () - 1;
     }
 
@@ -174,8 +177,11 @@ namespace MultithreadSolution
 
     int GetNumberOfVisibleTreesInForest (const Forest& forest)
     {
-        const unsigned int width = forest[0].size ();
         const unsigned int height = forest.size ();
+        if (height == 0)
+            return 0;
+
+        const unsigned int width = forest[0].size ();
 
         std::vector<bool> row (width, false);
         VisibilityCache visibility (height, row);
@@ -253,9 +259,13 @@ namespace MultithreadSolution
 
     int GetHighestScenicScoreInForest (const Forest& forest)
     {
+        const unsigned int height = forest.size ();
+        if (height == 0)
+            return 0;
+
         int maxScore = 0;
         const unsigned int width = forest[0].size ();
-        for (unsigned int i = 0; i < forest.size (); ++i) {
+        for (unsigned int i = 0; i < height; ++i) {
             for (unsigned int j = 0; j < width; ++j) {
                 if (IsTreeOnEdge (forest, i, j)) {
                     continue;

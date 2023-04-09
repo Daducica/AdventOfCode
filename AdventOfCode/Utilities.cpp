@@ -9,26 +9,40 @@ namespace Utilities
 {
     std::vector<std::vector<short>> ReadForest (const std::string& fileName)
     {
-        std::ifstream fileStream (fileName);
-        std::string line;
         std::vector<std::vector<short>> forest;
+        std::ifstream fileStream (fileName);
+        if (!fileStream.good ()) {
+            PrintFileNotFoundMessage (fileName);
+            return forest;
+        }
+
+        std::string line;
         std::getline (fileStream, line);
         const unsigned int width = line.size ();
         do {
+            if (line.size () != width) {
+                PrintBadLineLengthMessage (forest.size () + 1, fileName);
+                return forest;
+            }
             std::vector<short> row (width);
             for (unsigned int i = 0; i < width; i++) {
-                row[i] = CharToShort (line[i]);
+                row[i] = CharDigitToShort (line[i]);
             }
-            forest.push_back (row);
+            forest.emplace_back (row);
         } while (std::getline (fileStream, line));
-        fileStream.close ();
         return forest;
     }
 
 
-    short CharToShort (char c)
+    short CharDigitToShort (char c)
     {
-        return c - '0';
+        const short digit = c - '0';
+        if (digit > 9 || digit < 0) {
+            PrintNonDigitCharMessage (c);
+            return 0;
+        }
+
+        return digit;
     }
 
 
@@ -49,6 +63,32 @@ namespace Utilities
         }
 
         file.close ();
+    }
+
+
+    void PrintFileNotFoundMessage (const std::string& fileName)
+    {
+        std::cout << "File \"" << fileName << "\" not found" << std::endl;
+    }
+
+
+    void PrintBadLineLengthMessage (short lineNumber, const std::string& fileName)
+    {
+        std::cout << "Length of line " << lineNumber
+            << " differs from that of the earlier lines. (File name = " << fileName << ")" << std::endl;
+    }
+
+
+    void PrintIndexOutOfBondsMessage (int i, int j, int height, int width)
+    {
+        std::cout << "Index out of bonds error: trying to reach index (" << i << ", " << j << ")"
+            << " while dimensions are (" << height << ", " << width << ")" << std::endl;
+    }
+
+
+    void PrintNonDigitCharMessage (char c)
+    {
+        std::cout << "Trying to convert char " << c << " to a one-digit-number failed." << std::endl;
     }
 
 

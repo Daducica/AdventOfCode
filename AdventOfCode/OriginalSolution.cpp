@@ -11,9 +11,13 @@ namespace OriginalSolution
 {
     std::vector<std::vector<int>> ReadFile (const std::string& fileName)
     {
-        std::ifstream inf (fileName);
-        std::string l;
         std::vector<std::vector<int>> m;
+        std::ifstream inf (fileName);
+        if (!inf.good ()) {
+            std::cout << "File \"" << fileName << "\" not found" << std::endl;
+            return m;
+        }
+        std::string l;
         while (std::getline (inf, l)) {
             std::vector<int> t;
             for (int i = 0; i < l.size (); i++) {
@@ -27,6 +31,9 @@ namespace OriginalSolution
 
     int CalculateVisibilityCount (const std::vector<std::vector<int>>& m)
     {
+        if (m.size () == 0)
+            return 0;
+
         int vt = 0;
         for (int i = 0; i < m.size (); i++) {
             for (int j = 0; j < m[0].size (); j++) {
@@ -85,6 +92,9 @@ namespace OriginalSolution
 
     int CalculateHighestScenicScore (const std::vector<std::vector<int>>& m)
     {
+        if (m.size () == 0)
+            return 0;
+
         int mss = 0;
         for (int i = 0; i < m.size (); i++) {
             for (int j = 0; j < m[0].size (); j++) {

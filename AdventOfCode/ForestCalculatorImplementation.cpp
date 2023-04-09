@@ -76,6 +76,10 @@ namespace OOPSolution
 	{
 		const unsigned int width = forest->GetWidth ();
 		const unsigned int height = forest->GetHeight ();
+
+		if (height == 0 || width == 0)
+			return 0;
+
 		int visibleTreeCount = 0;
 		for (unsigned int j = 0; j < width; j++) {
 			int maxHeightInColumn = -1;

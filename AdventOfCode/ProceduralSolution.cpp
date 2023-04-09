@@ -13,6 +13,9 @@ namespace ProceduralSolution
 
     static bool IsTreeOnEdge (const std::vector<std::vector<short>>& forest, int i, int j)
     {
+        if (forest.empty ())
+            return false;
+
         return i == 0 || j == 0 || i == forest.size () - 1 || j == forest[0].size () - 1;
     }
 
@@ -95,6 +98,9 @@ namespace ProceduralSolution
 
     int GetNumberOfVisibleTreesInForest (const std::vector<std::vector<short>>& forest)
     {
+        if (forest.empty ())
+            return 0;
+
         int visibleTreeCount = 0;
         const unsigned int width = forest[0].size ();
         for (unsigned int i = 0; i < forest.size (); i++) {
@@ -171,6 +177,9 @@ namespace ProceduralSolution
 
     int GetHighestScenicScoreInForest (const std::vector<std::vector<short>>& forest)
     {
+        if (forest.empty ())
+            return 0;
+
         int maxScore = 0;
         const unsigned int width = forest[0].size ();
         for (unsigned int i = 0; i < forest.size (); i++) {

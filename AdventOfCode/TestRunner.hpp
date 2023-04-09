@@ -13,7 +13,9 @@ namespace Test
 		const bool shouldRunVisibilityCountTest;
 		const bool shouldRunHighestScenicScoreTest;
 
-		TestConfig () = delete;
+		TestConfig (const std::string& fileName, unsigned int numberOfTestRuns,
+					bool shouldRunFullTest, bool shouldMeasureFileRead,
+					bool shouldRunVisibilityCountTest, bool shouldRunHighestScenicScoreTest);
 	};
 
 	void RunTests (const TestConfig& config);

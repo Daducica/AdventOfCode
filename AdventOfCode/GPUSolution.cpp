@@ -14,6 +14,9 @@ namespace GPUSolution
 
 	int GetNumberOfVisibleTreesInForest (const std::vector<std::vector<short>>& forest)
 	{
+		if (forest.size () == 0)
+			return 0;
+
 		return RunVisibleTreeCalculationOnGPU (forest);
 	}
 
@@ -28,7 +31,7 @@ namespace GPUSolution
 	void RunGPUSolution (const std::string& fileName)
 	{
 		const Forest forest = ReadFile (fileName);
-		//GetNumberOfVisibleTreesInForest (forest);
+		GetNumberOfVisibleTreesInForest (forest);
 		GetHighestScenicScoreInForest (forest);
 	}
 
