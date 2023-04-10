@@ -9,7 +9,7 @@ The work is not yet finished, but here's a description of the current state of t
 I have provided several solutions that approach the problem from different angles. The framework is easily extendable, so it is possible to add or experiment with more solutions. I started with the easiest approach, which is just the 'brute force' way of solving the issue (OriginalSolution), then applied some clean coding principles to make the code more readible (ProceduralSolution). I also implemented a faster solution to the first problem (OptimizedSolution) and used object oriented programming to implement yet another solution (OOPSolution). Additionally, I experimented with a version that utilizes threads (MultithreadSolution) and a version that uses the GPU (GPUSolution). I'll give a more detailed explanation of each of these approaches further below.
 
 ## Technicalities
-I used Visual Studio C++17 Standard and CUDA Toolkit 12.1 to compile the project. To run the full solution, the CUDA Toolkit should be installed.
+I used Visual Studio (version Visual C++ 14.2) C++17 Standard and the CUDA Toolkit (version 12.1) to compile the project. To run the full solution, the CUDA Toolkit should be installed.
 
 ## The Test Framework
 
@@ -25,15 +25,27 @@ We can choose which item in the solution vector should be treated as the benchma
 
 ### Original Solution
 
+The original solution is a naive implementation taht serves only as a benchmark for code readability and runtime comparisions. As a result, I have not optimized or modified it in any way, except for some basic changes that help with testing the code.
+
 ### Procedural Solution
+
+For the procedural solution, I began with the code of the original solution. The purpose of this version was to keep the original algorithm while improving the code's readability. To achieve this, I organized the code into small functions with descriptive names and I renamed the variables so that their purpose is clear. In addition, I saved some frequently used values into local variables, and made variables 'const' wherever possible.
 
 ### Optimized (Procedural) Solution
 
+In the optimized solution, I experimented with my own algorithm that iterates though the matrix only four times (one iteration for each of the four directions) and saves the largest height seen in the row / column so far. This means we are working with an O(n^2) algorithm, instead of O(n^3). I have implemented this logic for the first task, but the same idea can be used for the second task as well (not implemented yet). The purpose of this version is to be as fast as possible while also maintain basic code readability.
+
 ### OOP Solution
+
+The OOP solution focuses on reusability and extendability. While it uses the algorithm behind the optimized solution, and thus it's faster than the original solution, it is expected to be slower than the optimized solution. Allocating memory for custom classes slows down the file read. Working with class instances (and a virtual class) should be more expensive in terms of memory and runtime. On the other hand, storing the results of the calculations means that we can work with the values later on if needed. The classes can be repurposed and extended for future use cases. Decoupling the calculation logic from the data class enables the reuse of the logic in other contexts. The algorithm can be easily swapped out, both at compile time and at runtime, allowing for experimentation and comparision of several different algorithms.
 
 ### Multithread Solution
 
+The multithreaded solution utilizes the parallel std::for_each to make the calculation faster in case there are multiple cores. It has been implemented for the first task only. I expect a significant speedup for larger matrices. In case of small matrices (like the Advent of Code example), setting up the threads may outweigh the benefits of parallelization. It would be worthwile to experiment with custom threading solutions instead of the std::for_each.
+
 ### GPU Solution
+
+The tasks require matrix calculations, an area where GPUs excel. The questions is, can we break down the tasks into highly parallelizable parts to reduce runtime? I experimented with this idea, but the results were inconclusive and the solution needs a rework. I attempted to delegate the calculations of the first task to the GPU, where sweeping through columns or rows can be done in parallel. The basic algorithm behind this comes from the optimized solution and allows for parallelization along one axes of the matrix (writing into the visibility cache matrix forces us to iterate through the data matrix sequentially four times). However, it would be a good idea to try and use some of the original logic instead, which would allow for parallelization along all four directions. 
 
 ## Test Data
 
@@ -44,8 +56,8 @@ I have included two test matrices into my project. The file named 'day8.txt' con
 ## Remarks
 
 ## TODO items
-- check compiler warnings
 - optimize second task (similarly to the optimization of the first task)
+- experiment with short vs int and mirrored matrices
 - finish GPU solution
 - syntactic sugar check
 - finish documentation
