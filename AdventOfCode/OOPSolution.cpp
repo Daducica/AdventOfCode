@@ -3,7 +3,6 @@
 #include <cassert>
 #include <fstream>
 #include <optional>
-#include <vector>
 
 #include "ForestCalculatorImplementation.hpp"
 

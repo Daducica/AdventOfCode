@@ -4,15 +4,13 @@
 
 namespace GPUSolution
 {
-	typedef std::vector<std::vector<short>> Forest;
-
-	std::vector<std::vector<short>> ReadFile (const std::string& fileName)
+	ForestMatrix ReadFile (const std::string& fileName)
 	{
 		return Utilities::ReadForest (fileName);
 	}
 
 
-	uint64_t GetNumberOfVisibleTreesInForest (const std::vector<std::vector<short>>& forest)
+	uint64_t GetNumberOfVisibleTreesInForest (const ForestMatrix& forest)
 	{
 		if (forest.size () == 0)
 			return 0;
@@ -21,7 +19,7 @@ namespace GPUSolution
 	}
 
 
-	uint64_t GetHighestScenicScoreInForest (const std::vector<std::vector<short>>& /*forest*/)
+	uint64_t GetHighestScenicScoreInForest (const ForestMatrix& /*forest*/)
 	{
 		// TODO
 		return 0;
@@ -30,7 +28,7 @@ namespace GPUSolution
 
 	void RunGPUSolution (const std::string& fileName)
 	{
-		const Forest forest = ReadFile (fileName);
+		const ForestMatrix forest = ReadFile (fileName);
 		GetNumberOfVisibleTreesInForest (forest);
 		GetHighestScenicScoreInForest (forest);
 	}

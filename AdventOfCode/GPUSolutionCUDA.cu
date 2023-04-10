@@ -6,17 +6,17 @@
 
 namespace GPUSolution
 {
-    static __global__ void CheckVisibilityFromLeft_Kernel (bool* visibility, const short* forest,
+    static __global__ void CheckVisibilityFromLeft_Kernel (bool* visibility, const TreeHeight* forest,
                                                            size_t width, size_t height)
     {
         size_t row {blockIdx.x * blockDim.x + threadIdx.x};
         if (row >= height)
             return;
 
-        int maxHeightInRow = -1;
+        TreeHeight maxHeightInRow = -1;
         for (size_t column = 0; column < width; ++column) {
             size_t index = row * width + column;
-            const short treeHeight = forest[index];
+            const TreeHeight treeHeight = forest[index];
 
             if (treeHeight > maxHeightInRow) {
                 maxHeightInRow = treeHeight;
@@ -28,17 +28,17 @@ namespace GPUSolution
     }
 
 
-    static __global__ void CheckVisibilityFromRight_Kernel (bool* visibility, const short* forest,
+    static __global__ void CheckVisibilityFromRight_Kernel (bool* visibility, const TreeHeight* forest,
                                                             size_t width, size_t height)
     {
         size_t row {blockIdx.x * blockDim.x + threadIdx.x};
         if (row >= height)
             return;
 
-        int maxHeightInRow = -1;
-        for (int column = int (width - 1); column >= 0; --column) {
+        TreeHeight maxHeightInRow = -1;
+        for (std::int32_t column = std::int32_t (width - 1); column >= 0; --column) {
             size_t index = row * width + column;
-            const short treeHeight = forest[index];
+            const TreeHeight treeHeight = forest[index];
 
             if (treeHeight > maxHeightInRow) {
                 maxHeightInRow = treeHeight;
@@ -50,17 +50,17 @@ namespace GPUSolution
     }
 
 
-    static __global__ void CheckVisibilityFromTop_Kernel (bool* visibility, const short* forest,
+    static __global__ void CheckVisibilityFromTop_Kernel (bool* visibility, const TreeHeight* forest,
                                                           size_t width, size_t height)
     {
         size_t column {blockIdx.x * blockDim.x + threadIdx.x};
         if (column >= width)
             return;
 
-        int maxHeightInRow = -1;
+        TreeHeight maxHeightInRow = -1;
         for (size_t row = 0; row < height; ++row) {
             size_t index = row * width + column;
-            const short treeHeight = forest[index];
+            const TreeHeight treeHeight = forest[index];
 
             if (treeHeight > maxHeightInRow) {
                 maxHeightInRow = treeHeight;
@@ -72,17 +72,17 @@ namespace GPUSolution
     }
 
 
-    static __global__ void CheckVisibilityFromBottom_Kernel (bool* visibility, const short* forest,
+    static __global__ void CheckVisibilityFromBottom_Kernel (bool* visibility, const TreeHeight* forest,
                                                              size_t width, size_t height)
     {
         size_t column {blockIdx.x * blockDim.x + threadIdx.x};
         if (column >= width)
             return;
 
-        int maxHeightInRow = -1;
-        for (int row = int (height - 1); row >= 0; --row) {
+        TreeHeight maxHeightInRow = -1;
+        for (std::int32_t row = std::int32_t (height - 1); row >= 0; --row) {
             size_t index = row * width + column;
-            const short treeHeight = forest[index];
+            const TreeHeight treeHeight = forest[index];
 
             if (treeHeight > maxHeightInRow) {
                 maxHeightInRow = treeHeight;
@@ -94,12 +94,12 @@ namespace GPUSolution
     }
 
 
-    static cudaError_t CheckVisibilityFromLeft (bool* visibility, const short* forest,
+    static cudaError_t CheckVisibilityFromLeft (bool* visibility, const TreeHeight* forest,
                                                 size_t width, size_t height)
     {
         size_t arraySize = width * height;
 
-        short* deviceForest;
+        TreeHeight* deviceForest;
         bool* deviceVisibility;
         cudaError_t cudaStatus;
 
@@ -115,13 +115,13 @@ namespace GPUSolution
             goto Error;
         }
 
-        cudaStatus = cudaMalloc ((void**)&deviceForest, arraySize * sizeof (short));
+        cudaStatus = cudaMalloc ((void**)&deviceForest, arraySize * sizeof (TreeHeight));
         if (cudaStatus != cudaSuccess) {
             fprintf (stderr, "cudaMalloc failed!");
             goto Error;
         }
 
-        cudaStatus = cudaMemcpy (deviceForest, forest, arraySize * sizeof (short), cudaMemcpyHostToDevice);
+        cudaStatus = cudaMemcpy (deviceForest, forest, arraySize * sizeof (TreeHeight), cudaMemcpyHostToDevice);
         if (cudaStatus != cudaSuccess) {
             fprintf (stderr, "cudaMemcpy failed!");
             goto Error;
@@ -168,13 +168,13 @@ namespace GPUSolution
     }
 
 
-    static short* Convert2DVectorTo1DArray (const std::vector<std::vector<short>>&forest)
+    static TreeHeight* Convert2DVectorTo1DArray (const ForestMatrix&forest)
     {
         const size_t height = forest.size ();
         const size_t width = forest[0].size ();
         const size_t arraySize = height * width;
 
-        short* array = new short [arraySize];
+        TreeHeight* array = new TreeHeight[arraySize];
         for (size_t row = 0; row < height; row++) {
             for (size_t col = 0; col < width; col++) {
                 array[row*width + col] = forest[row][col];
@@ -184,13 +184,13 @@ namespace GPUSolution
     }
 
 
-    uint64_t RunVisibleTreeCalculationOnGPU (const std::vector<std::vector<short>>& forest)
+    uint64_t RunVisibleTreeCalculationOnGPU (const ForestMatrix& forest)
     {
         const size_t height = forest.size ();
         const size_t width = forest[0].size ();
         const size_t arraySize = height * width;
 
-        short* forestArray = Convert2DVectorTo1DArray (forest);
+        TreeHeight* forestArray = Convert2DVectorTo1DArray (forest);
         bool* visibility = new bool[arraySize];
         std::fill_n (visibility, arraySize, false);
 

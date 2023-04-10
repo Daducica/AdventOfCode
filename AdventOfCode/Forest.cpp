@@ -7,6 +7,12 @@
 namespace OOPSolution
 {
 
+	Tree& ForestCalculatorInterface::GetTree (Forest& forest, size_t row, size_t col)
+	{
+		return forest.GetTree (row, col);
+	}
+
+
 	ForestCalculatorInterface::~ForestCalculatorInterface () = default;
 
 	Forest::Forest (const std::string& fileName, std::unique_ptr<ForestCalculatorInterface> impl) :
@@ -59,6 +65,18 @@ namespace OOPSolution
 	}
 
 
+	std::optional<uint64_t> Forest::GetNumberOfVisibleTrees () const
+	{
+		return numberOfVisibleTrees;
+	}
+
+
+	std::optional<uint64_t> Forest::GetHighestScenicScore () const
+	{
+		return highestScenicScore;
+	}
+
+
 	uint64_t Forest::CalculateAndSaveVisibleTreeCount ()
 	{
 		const uint64_t result = calculatorImp->CalculateAndSaveVisibleTreeCount (this);
@@ -104,7 +122,7 @@ namespace OOPSolution
 			}
 			std::vector<Tree> rowVector;
 			for (size_t row = 0; row < line.size (); row++) {
-				rowVector.emplace_back (Tree (Utilities::CharDigitToShort (line[row])));
+				rowVector.emplace_back (Tree (Utilities::CharDigitToTreeHeight (line[row])));
 			}
 			forest.trees.emplace_back (rowVector);
 		} while (std::getline (fileStream, line));

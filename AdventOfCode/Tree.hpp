@@ -3,15 +3,15 @@
 
 #include <optional>
 #include <string>
-#include <vector>
 
 #include "Tree.hpp"
+#include "Types.hpp"
 
 namespace OOPSolution
 {
 	class Tree
 	{
-		short height;
+		TreeHeight height;
 		std::optional<bool> visibleFromLeft;
 		std::optional<bool> visibleFromRight;
 		std::optional<bool> visibleFromTop;
@@ -19,8 +19,8 @@ namespace OOPSolution
 		std::optional<uint64_t>  scenicScore;
 
 	public:
-		Tree (short height);
-		short GetHeight () const;
+		Tree (TreeHeight height);
+		TreeHeight GetHeight () const;
 		bool IsVisibleFromAnyDirection () const;
 
 		void SetVisibleFromLeft (bool value);

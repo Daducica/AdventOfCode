@@ -5,13 +5,13 @@
 
 namespace ProceduralSolution
 {
-    std::vector<std::vector<short>> ReadFile (const std::string& fileName)
+    ForestMatrix ReadFile (const std::string& fileName)
     {
         return Utilities::ReadForest (fileName);
     }
 
 
-    static bool IsTreeOnEdge (const std::vector<std::vector<short>>& forest, size_t row, size_t col)
+    static bool IsTreeOnEdge (const ForestMatrix& forest, size_t row, size_t col)
     {
         if (forest.empty ())
             return false;
@@ -20,9 +20,9 @@ namespace ProceduralSolution
     }
 
 
-    static bool IsTreeVisibleFromTop (const std::vector<std::vector<short>>& forest, size_t row, size_t col)
+    static bool IsTreeVisibleFromTop (const ForestMatrix& forest, size_t row, size_t col)
     {
-        const int treeHeight = forest[row][col];
+        const TreeHeight treeHeight = forest[row][col];
         for (size_t index = 0; index < row; index++) {
             if (forest[index][col] >= treeHeight) {
                 return false;
@@ -31,9 +31,9 @@ namespace ProceduralSolution
         return true;
     }
 
-    static bool IsTreeVisibleFromBottom (const std::vector<std::vector<short>>& forest, size_t row, size_t col)
+    static bool IsTreeVisibleFromBottom (const ForestMatrix& forest, size_t row, size_t col)
     {
-        const int treeHeight = forest[row][col];
+        const TreeHeight treeHeight = forest[row][col];
         for (size_t index = forest.size () - 1; index > row; index--) {
             if (forest[index][col] >= treeHeight) {
                 return false;
@@ -43,9 +43,9 @@ namespace ProceduralSolution
     }
 
 
-    static bool IsTreeVisibleFromLeft (const std::vector<std::vector<short>>& forest, size_t row, size_t col)
+    static bool IsTreeVisibleFromLeft (const ForestMatrix& forest, size_t row, size_t col)
     {
-        const int treeHeight = forest[row][col];
+        const TreeHeight treeHeight = forest[row][col];
         for (size_t index = 0; index < col; index++) {
             if (forest[row][index] >= treeHeight) {
                 return false;
@@ -55,9 +55,9 @@ namespace ProceduralSolution
     }
 
 
-    static bool IsTreeVisibleFromRight (const std::vector<std::vector<short>>& forest, size_t row, size_t col)
+    static bool IsTreeVisibleFromRight (const ForestMatrix& forest, size_t row, size_t col)
     {
-        const int treeHeight = forest[row][col];
+        const TreeHeight treeHeight = forest[row][col];
         for (size_t index = forest[0].size () - 1; index > col; index--) {
             if (forest[row][index] >= treeHeight) {
                 return false;
@@ -67,7 +67,7 @@ namespace ProceduralSolution
     }
 
 
-    static bool IsTreeVisible (const std::vector<std::vector<short>>& forest, size_t row, size_t col)
+    static bool IsTreeVisible (const ForestMatrix& forest, size_t row, size_t col)
     {
         if (IsTreeOnEdge (forest, row, col))
             return true;
@@ -88,7 +88,7 @@ namespace ProceduralSolution
     }
 
 
-    uint64_t GetNumberOfVisibleTreesInForest (const std::vector<std::vector<short>>& forest)
+    uint64_t GetNumberOfVisibleTreesInForest (const ForestMatrix& forest)
     {
         if (forest.empty ())
             return 0;
@@ -105,10 +105,10 @@ namespace ProceduralSolution
     }
 
 
-    static uint64_t GetNumberOfVisibleTreesToTheTop (const std::vector<std::vector<short>>& forest, size_t row, size_t col)
+    static uint64_t GetNumberOfVisibleTreesToTheTop (const ForestMatrix& forest, size_t row, size_t col)
     {
         uint64_t treeCount = 0;
-        const int treeHeight = forest[row][col];
+        const TreeHeight treeHeight = forest[row][col];
         for (std::int32_t index = std::int32_t (row - 1); index >= 0; index--) {
             treeCount++;
             if (forest[index][col] >= treeHeight)
@@ -118,10 +118,10 @@ namespace ProceduralSolution
     }
 
 
-    static uint64_t GetNumberOfVisibleTreesToTheBottom (const std::vector<std::vector<short>>& forest, size_t row, size_t col)
+    static uint64_t GetNumberOfVisibleTreesToTheBottom (const ForestMatrix& forest, size_t row, size_t col)
     {
         uint64_t treeCount = 0;
-        const int treeHeight = forest[row][col];
+        const TreeHeight treeHeight = forest[row][col];
         for (size_t index = row + 1; index < forest.size (); index++) {
             treeCount++;
             if (forest[index][col] >= treeHeight)
@@ -131,10 +131,10 @@ namespace ProceduralSolution
     }
 
 
-    static uint64_t GetNumberOfVisibleTreesToTheLeft (const std::vector<std::vector<short>>& forest, size_t row, size_t col)
+    static uint64_t GetNumberOfVisibleTreesToTheLeft (const ForestMatrix& forest, size_t row, size_t col)
     {
         uint64_t treeCount = 0;
-        const int treeHeight = forest[row][col];
+        const TreeHeight treeHeight = forest[row][col];
         for (std::int32_t index = std::int32_t (col - 1); index >= 0; index--) {
             treeCount++;
             if (forest[row][index] >= treeHeight)
@@ -144,10 +144,10 @@ namespace ProceduralSolution
     }
 
 
-    static uint64_t GetNumberOfVisibleTreesToTheRight (const std::vector<std::vector<short>>& forest, size_t row, size_t col)
+    static uint64_t GetNumberOfVisibleTreesToTheRight (const ForestMatrix& forest, size_t row, size_t col)
     {
         uint64_t treeCount = 0;
-        const int treeHeight = forest[row][col];
+        const TreeHeight treeHeight = forest[row][col];
         for (size_t index = col + 1; index < forest[0].size (); index++) {
             treeCount++;
             if (forest[row][index] >= treeHeight)
@@ -157,7 +157,7 @@ namespace ProceduralSolution
     }
 
 
-    static uint64_t GetScenicScoreForTree (const std::vector<std::vector<short>>& forest, size_t row, size_t col)
+    static uint64_t GetScenicScoreForTree (const ForestMatrix& forest, size_t row, size_t col)
     {
         const uint64_t scoreToLeft = GetNumberOfVisibleTreesToTheLeft (forest, row, col);
         const uint64_t scoreToRight = GetNumberOfVisibleTreesToTheRight (forest, row, col);
@@ -167,7 +167,7 @@ namespace ProceduralSolution
     }
 
 
-    uint64_t GetHighestScenicScoreInForest (const std::vector<std::vector<short>>& forest)
+    uint64_t GetHighestScenicScoreInForest (const ForestMatrix& forest)
     {
         if (forest.empty ())
             return 0;
@@ -190,7 +190,7 @@ namespace ProceduralSolution
 
     void RunProceduralSolution (const std::string& fileName)
     {
-        const std::vector<std::vector<short>> forest = ReadFile (fileName);
+        const ForestMatrix forest = ReadFile (fileName);
         ProceduralSolution::GetNumberOfVisibleTreesInForest (forest);
         ProceduralSolution::GetHighestScenicScoreInForest (forest);
     }

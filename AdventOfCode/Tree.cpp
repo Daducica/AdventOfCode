@@ -2,13 +2,13 @@
 
 namespace OOPSolution
 {
-	Tree::Tree (short height) :
+	Tree::Tree (TreeHeight height) :
 		height (height)
 	{
 	}
 
 
-	short Tree::GetHeight () const
+	TreeHeight Tree::GetHeight () const
 	{
 		return height;
 	}

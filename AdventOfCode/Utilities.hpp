@@ -2,14 +2,15 @@
 #define UTILITIES
 
 #include <string>
-#include <vector>
 #include <chrono>
 #include <optional>
 
+#include "Types.hpp"
+
 namespace Utilities
 {
-	std::vector<std::vector<short>> ReadForest (const std::string& fileName);
-	short CharDigitToShort (char c);
+	ForestMatrix ReadForest (const std::string& fileName);
+	TreeHeight CharDigitToTreeHeight (char c);
 	void GenerateNewForestFile (const std::string& fileName, size_t height, size_t width);
 
 	void PrintFileNotFoundMessage (const std::string& fileName);

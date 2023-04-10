@@ -7,9 +7,9 @@
 
 namespace Utilities
 {
-    std::vector<std::vector<short>> ReadForest (const std::string& fileName)
+    ForestMatrix ReadForest (const std::string& fileName)
     {
-        std::vector<std::vector<short>> forest;
+        ForestMatrix forest;
         std::ifstream fileStream (fileName);
         if (!fileStream.good ()) {
             PrintFileNotFoundMessage (fileName);
@@ -24,9 +24,9 @@ namespace Utilities
                 PrintBadLineLengthMessage (forest.size () + 1, fileName);
                 return forest;
             }
-            std::vector<short> row (width);
-            for (size_t i = 0; i < width; i++) {
-                row[i] = CharDigitToShort (line[i]);
+            ForestRow row (width);
+            for (size_t rowIndex = 0; rowIndex < width; rowIndex++) {
+                row[rowIndex] = CharDigitToTreeHeight (line[rowIndex]);
             }
             forest.emplace_back (row);
         } while (std::getline (fileStream, line));
@@ -34,9 +34,9 @@ namespace Utilities
     }
 
 
-    short CharDigitToShort (char c)
+    TreeHeight CharDigitToTreeHeight (char c)
     {
-        const short digit = c - '0';
+        const TreeHeight digit = c - '0';
         if (digit > 9 || digit < 0) {
             PrintNonDigitCharMessage (c);
             return 0;
@@ -55,8 +55,8 @@ namespace Utilities
         std::mt19937 generator (randomDevice ());
         std::uniform_int_distribution<> distribution (0, 9);
 
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
+        for (size_t row = 0; row < height; row++) {
+            for (size_t col = 0; col < width; col++) {
                 file << distribution (generator);
             }
             file << "\n";

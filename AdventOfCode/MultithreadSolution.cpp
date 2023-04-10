@@ -7,16 +7,13 @@
 
 namespace MultithreadSolution
 {
-    typedef std::vector<std::vector<short>> Forest;
-    typedef std::vector<std::vector<bool>> VisibilityCache;
-
-    std::vector<std::vector<short>> ReadFile (const std::string& fileName)
+    ForestMatrix ReadFile (const std::string& fileName)
     {
         return Utilities::ReadForest (fileName);
     }
 
 
-    static bool IsTreeOnEdge (const Forest& forest, size_t row, size_t col)
+    static bool IsTreeOnEdge (const ForestMatrix& forest, size_t row, size_t col)
     {
         if (forest.empty ())
             return false;
@@ -25,7 +22,7 @@ namespace MultithreadSolution
     }
 
 
-    static uint64_t CheckVisibilityFromLeft (const Forest& forest, VisibilityCache& visibility)
+    static uint64_t CheckVisibilityFromLeft (const ForestMatrix& forest, VisibilityCache& visibility)
     {
         const size_t width = forest[0].size ();
         const size_t height = forest.size ();
@@ -33,11 +30,11 @@ namespace MultithreadSolution
         std::vector<uint64_t> rowResults (height);
 
         auto process = [&](const size_t row) {
-            int maxHeightInRow = -1;
-            const std::vector<short>& treeRow = forest[row];
-            std::vector<bool>& visibilityRow = visibility[row];
+            TreeHeight maxHeightInRow = -1;
+            const ForestRow& treeRow = forest[row];
+            VisibilityCacheRow& visibilityRow = visibility[row];
             for (size_t col = 0; col < width; ++col) {
-                const short treeHeight = treeRow[col];
+                const TreeHeight treeHeight = treeRow[col];
                 if (treeHeight > maxHeightInRow) {
                     maxHeightInRow = treeHeight;
                     if (!visibilityRow[col]) {
@@ -64,7 +61,7 @@ namespace MultithreadSolution
     }
 
 
-    static uint64_t CheckVisibilityFromRight (const Forest& forest, VisibilityCache& visibility)
+    static uint64_t CheckVisibilityFromRight (const ForestMatrix& forest, VisibilityCache& visibility)
     {
         const size_t width = forest[0].size ();
         const size_t height = forest.size ();
@@ -72,11 +69,11 @@ namespace MultithreadSolution
         std::vector<uint64_t> rowResults (height);
 
         auto process = [&](const size_t row) {
-            int maxHeightInRow = -1;
-            const std::vector<short>& treeRow = forest[row];
-            std::vector<bool>& visibilityRow = visibility[row];
+            TreeHeight maxHeightInRow = -1;
+            const ForestRow& treeRow = forest[row];
+            VisibilityCacheRow& visibilityRow = visibility[row];
             for (std::int32_t col = std::int32_t (width - 1); col >= 0; --col) {
-                const short treeHeight = treeRow[col];
+                const TreeHeight treeHeight = treeRow[col];
                 if (treeHeight > maxHeightInRow) {
                     maxHeightInRow = treeHeight;
                     if (!visibilityRow[col]) {
@@ -103,7 +100,7 @@ namespace MultithreadSolution
     }
 
 
-    static uint64_t CheckVisibilityFromTop (const Forest& forest, VisibilityCache& visibility)
+    static uint64_t CheckVisibilityFromTop (const ForestMatrix& forest, VisibilityCache& visibility)
     {
         const size_t width = forest[0].size ();
         const size_t height = forest.size ();
@@ -111,9 +108,9 @@ namespace MultithreadSolution
         std::vector<uint64_t> rowResults (width);
 
         auto process = [&](const size_t col) {
-            int maxHeightInColumn = -1;
+            TreeHeight maxHeightInColumn = -1;
             for (size_t row = 0; row < height; ++row) {
-                const short treeHeight = forest[row][col];
+                const TreeHeight treeHeight = forest[row][col];
                 if (treeHeight > maxHeightInColumn) {
                     maxHeightInColumn = treeHeight;
                     if (!visibility[row][col]) {
@@ -140,7 +137,7 @@ namespace MultithreadSolution
     }
 
 
-    static uint64_t CheckVisibilityFromBottom (const Forest& forest, VisibilityCache& visibility)
+    static uint64_t CheckVisibilityFromBottom (const ForestMatrix& forest, VisibilityCache& visibility)
     {
         const size_t width = forest[0].size ();
         const size_t height = forest.size ();
@@ -148,9 +145,9 @@ namespace MultithreadSolution
         std::vector<uint64_t> rowResults (width);
 
         auto process = [&](const size_t col) {
-            int maxHeightInColumn = -1;
+            TreeHeight maxHeightInColumn = -1;
             for (std::int32_t row = std::int32_t (height - 1); row >= 0; --row) {
-                const short treeHeight = forest[row][col];
+                const TreeHeight treeHeight = forest[row][col];
                 if (treeHeight > maxHeightInColumn) {
                     maxHeightInColumn = treeHeight;
                     if (!visibility[row][col]) {
@@ -177,7 +174,7 @@ namespace MultithreadSolution
     }
 
 
-    uint64_t GetNumberOfVisibleTreesInForest (const Forest& forest)
+    uint64_t GetNumberOfVisibleTreesInForest (const ForestMatrix& forest)
     {
         const size_t height = forest.size ();
         if (height == 0)
@@ -185,7 +182,7 @@ namespace MultithreadSolution
 
         const size_t width = forest[0].size ();
 
-        std::vector<bool> row (width, false);
+        VisibilityCacheRow row (width, false);
         VisibilityCache visibility (height, row);
 
         uint64_t visibleTreeCount = CheckVisibilityFromLeft (forest, visibility);
@@ -197,10 +194,10 @@ namespace MultithreadSolution
     }
 
 
-    static uint64_t GetNumberOfVisibleTreesToTheTop (const Forest& forest, size_t row, size_t col)
+    static uint64_t GetNumberOfVisibleTreesToTheTop (const ForestMatrix& forest, size_t row, size_t col)
     {
         uint64_t treeCount = 0;
-        const int treeHeight = forest[row][col];
+        const TreeHeight treeHeight = forest[row][col];
         for (std::int32_t index = std::int32_t (row - 1); index >= 0; index--) {
             treeCount++;
             if (forest[index][col] >= treeHeight)
@@ -210,10 +207,10 @@ namespace MultithreadSolution
     }
 
 
-    static uint64_t GetNumberOfVisibleTreesToTheBottom (const Forest& forest, size_t row, size_t col)
+    static uint64_t GetNumberOfVisibleTreesToTheBottom (const ForestMatrix& forest, size_t row, size_t col)
     {
         uint64_t treeCount = 0;
-        const int treeHeight = forest[row][col];
+        const TreeHeight treeHeight = forest[row][col];
         for (size_t index = row + 1; index < forest.size (); index++) {
             treeCount++;
             if (forest[index][col] >= treeHeight)
@@ -223,10 +220,10 @@ namespace MultithreadSolution
     }
 
 
-    static uint64_t GetNumberOfVisibleTreesToTheLeft (const Forest& forest, size_t row, size_t col)
+    static uint64_t GetNumberOfVisibleTreesToTheLeft (const ForestMatrix& forest, size_t row, size_t col)
     {
         uint64_t treeCount = 0;
-        const int treeHeight = forest[row][col];
+        const TreeHeight treeHeight = forest[row][col];
         for (std::int32_t index = std::int32_t (col - 1); index >= 0; index--) {
             treeCount++;
             if (forest[row][index] >= treeHeight)
@@ -236,10 +233,10 @@ namespace MultithreadSolution
     }
 
 
-    static uint64_t GetNumberOfVisibleTreesToTheRight (const Forest& forest, size_t row, size_t col)
+    static uint64_t GetNumberOfVisibleTreesToTheRight (const ForestMatrix& forest, size_t row, size_t col)
     {
         uint64_t treeCount = 0;
-        const int treeHeight = forest[row][col];
+        const TreeHeight treeHeight = forest[row][col];
         for (size_t index = col + 1; index < forest[0].size (); index++) {
             treeCount++;
             if (forest[row][index] >= treeHeight)
@@ -249,7 +246,7 @@ namespace MultithreadSolution
     }
 
 
-    static uint64_t GetScenicScoreForTree (const Forest& forest, size_t row, size_t col)
+    static uint64_t GetScenicScoreForTree (const ForestMatrix& forest, size_t row, size_t col)
     {
         const uint64_t scoreToLeft = GetNumberOfVisibleTreesToTheLeft (forest, row, col);
         const uint64_t scoreToRight = GetNumberOfVisibleTreesToTheRight (forest, row, col);
@@ -259,7 +256,7 @@ namespace MultithreadSolution
     }
 
 
-    uint64_t GetHighestScenicScoreInForest (const Forest& forest)
+    uint64_t GetHighestScenicScoreInForest (const ForestMatrix& forest)
     {
         const size_t height = forest.size ();
         if (height == 0)
@@ -283,7 +280,7 @@ namespace MultithreadSolution
 
     void RunMultithreadSolution (const std::string& fileName)
     {
-        const Forest forest = ReadFile (fileName);
+        const ForestMatrix forest = ReadFile (fileName);
         GetNumberOfVisibleTreesInForest (forest);
         GetHighestScenicScoreInForest (forest);
     }

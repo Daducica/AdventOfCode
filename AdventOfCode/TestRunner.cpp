@@ -212,7 +212,7 @@ namespace Test
 	{
 		const std::string testName = "Procedural";
 		const std::string fileName;
-		std::vector<std::vector<short>> testData;
+		ForestMatrix testData;
 	public:
 		TestProceduralSolution (const std::string& fileName);
 		virtual std::string GetTestName () const override;
@@ -244,7 +244,7 @@ namespace Test
 
 	size_t TestProceduralSolution::RunReadTest () const
 	{
-		std::vector<std::vector<short>> result = ProceduralSolution::ReadFile (fileName);
+		ForestMatrix result = ProceduralSolution::ReadFile (fileName);
 		if (result.empty ())
 			return 0;
 		return result.size () * result[0].size ();
@@ -267,7 +267,7 @@ namespace Test
 	{
 		const std::string testName = "Optimized";
 		const std::string fileName;
-		std::vector<std::vector<short>> testData;
+		ForestMatrix testData;
 	public:
 		TestOptimizedSolution (const std::string& fileName);
 		virtual std::string GetTestName () const override;
@@ -299,7 +299,7 @@ namespace Test
 
 	size_t TestOptimizedSolution::RunReadTest () const
 	{
-		std::vector<std::vector<short>> result = OptimizedProceduralSolution::ReadFile (fileName);
+		ForestMatrix result = OptimizedProceduralSolution::ReadFile (fileName);
 		if (result.empty ())
 			return 0;
 		return result.size () * result[0].size ();
@@ -375,7 +375,7 @@ namespace Test
 	{
 		const std::string testName = "Multithread";
 		const std::string fileName;
-		std::vector<std::vector<short>> testData;
+		ForestMatrix testData;
 	public:
 		TestMultithreadSolution (const std::string& fileName);
 		virtual std::string GetTestName () const override;
@@ -407,7 +407,7 @@ namespace Test
 
 	size_t TestMultithreadSolution::RunReadTest () const
 	{
-		std::vector<std::vector<short>> result = MultithreadSolution::ReadFile (fileName);
+		ForestMatrix result = MultithreadSolution::ReadFile (fileName);
 		if (result.empty ())
 			return 0;
 		return result.size () * result[0].size ();
@@ -430,7 +430,7 @@ namespace Test
 	{
 		const std::string testName = "GPU\t";
 		const std::string fileName;
-		std::vector<std::vector<short>> testData;
+		ForestMatrix testData;
 	public:
 		TestGPUSolution (const std::string& fileName);
 		virtual std::string GetTestName () const override;
@@ -462,7 +462,7 @@ namespace Test
 
 	size_t TestGPUSolution::RunReadTest () const
 	{
-		std::vector<std::vector<short>> result = GPUSolution::ReadFile (fileName);
+		ForestMatrix result = GPUSolution::ReadFile (fileName);
 		if (result.empty ())
 			return 0;
 		return result.size () * result[0].size ();

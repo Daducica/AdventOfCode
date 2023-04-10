@@ -175,6 +175,7 @@
     <ClInclude Include="ProceduralSolution.hpp" />
     <ClInclude Include="TestRunner.hpp" />
     <ClInclude Include="Tree.hpp" />
+    <ClInclude Include="Types.hpp" />
     <ClInclude Include="Utilities.hpp" />
   </ItemGroup>
   <ItemGroup>
