@@ -45,7 +45,7 @@ The multithreaded solution utilizes the parallel std::for_each to make the calcu
 
 ### GPU Solution
 
-
+The tasks require matrix calculations, an area where GPUs excel. The questions is, can we break down the tasks into highly parallelizable parts to reduce runtime? I experimented with this idea, but the results were inconclusive and the solution needs a rework. I attempted to delegate the calculations of the first task to the GPU, where sweeping through columns or rows can be done in parallel. The basic algorithm behind this comes from the optimized solution and allows for parallelization along one axes of the matrix (writing into the visibility cache matrix forces us to iterate through the data matrix sequentially four times). However, it would be a good idea to try and use some of the original logic instead, which would allow for parallelization along all four directions. 
 
 ## Test Data
 
