@@ -57,7 +57,7 @@ I have included two test matrices into my project. The file named 'day8.txt' con
 
 ## TODO items
 - optimize second task (similarly to the optimization of the first task)
-- experiment with short vs int and mirrored matrices
+- experiment with mirrored matrices
 - finish GPU solution
 - syntactic sugar check
 - finish documentation
