@@ -53,6 +53,21 @@ I have included two test matrices into my project. The file named 'day8.txt' con
 
 ## Results
 
+With a few tasks left on the todo list, these are the current results.
+
+FileName = day8.txt
+
+LoopCount = 10
+
+|             | Full        | Read        | VisC        | Scenic      |
+| ----------- | ----------- | ----------- | ----------- | ----------- |
+| Original    | 1.00x       | 1.00x       | 1.00x       | 1.00x       |
+| Procedural  | 2.21x       | 1.70x       | 4.26x       | 2.56x       |
+| Optimized   | 4.48x       | 1.72x       | 7.78x       | 2.73x       |
+| OOP         | 1.32x       | 0.55x       | 37.48x      | 3.28x       |
+| Multithread | 6.09x       | 1.87x       | 12.12x      | 2.69x       |
+| GPU         | 0.83x       | 1.76x       | 0.47x       | failed      |
+
 ## Remarks
 
 ## TODO items
