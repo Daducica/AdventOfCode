@@ -9,7 +9,7 @@ The work is not yet finished, but here's a description of the current state of t
 I have provided several solutions that approach the problem from different angles. The framework is easily extendable, so it is possible to add or experiment with more solutions. I started with the easiest approach, which is just the 'brute force' way of solving the issue (OriginalSolution), then applied some clean coding principles to make the code more readible (ProceduralSolution). I also implemented a faster solution to the first problem (OptimizedSolution) and used object oriented programming to implement yet another solution (OOPSolution). Additionally, I experimented with a version that utilizes threads (MultithreadSolution) and a version that uses the GPU (GPUSolution). I'll give a more detailed explanation of each of these approaches further below.
 
 ## Technicalities
-I used Visual Studio C++17 Standard and CUDA Toolkit 12.1 to compile the project. To run the full solution, the CUDA Toolkit should be installed.
+I used Visual Studio (version Visual C++ 14.2) C++17 Standard and the CUDA Toolkit (version 12.1) to compile the project. To run the full solution, the CUDA Toolkit should be installed.
 
 ## The Test Framework
 
