@@ -68,6 +68,8 @@ LoopCount = 10
 | Multithread | 6.09x       | 1.87x       | 12.12x      | 2.69x       |
 | GPU         | 0.83x       | 1.76x       | 0.47x       | failed      |
 
+If we take a look at the read results, we can see that most solutions achieved a significant speedup, thanks to the way we allocate memory and fill the vectors. The exception is the OOP version, which is much slower, but that makes sense considering it takes more time to construct all the Tree objects and the Forest object. The results for the first task (visibility count, visc) show how much the new algorithm (used for the optimized, OOP, multithread and GPU solutions) sped up the calculation. The OOP solution was much faster than all the other solutions, because it stored the results and could retreive them easily. The multithreaded solution achieved an additonal speedup because it was run on a multicore CPU, and the matrix was large enough to compensate for the price of creating the threads. With a larger matrix, the speed difference is even larger. The GPU solution was twice as slow as the original version, meaning that the implementation suffers from some kind of design flaw and needs to be revisited. The results for the second task make sense, too, as it is not yet optimized (or implemented in the case of the GPU version) and uses the same underlying algorithm everywhere.
+
 ## Remarks
 
 ## TODO items
